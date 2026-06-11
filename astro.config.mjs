@@ -18,7 +18,10 @@ export default defineConfig({
         '@fontsource/geist/700.css',
       ],
       title: 'FormWire Docs',
-      // social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+      editLink: {
+        baseUrl: 'https://github.com/britzdylan/formwire-docs/edit/main/',
+      },
+      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/britzdylan/formwire-docs' }],
       sidebar: [
         { label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started' } }] },
         { label: 'Guides', items: [{ autogenerate: { directory: 'guides' } }] },

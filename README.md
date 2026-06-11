@@ -25,7 +25,7 @@ Images go in `src/assets/` and are embedded with relative links. Static assets s
 ## 🚀 Running locally
 
 ```sh
-git clone https://github.com/formwire/formwire-docs.git
+git clone https://github.com/britzdylan/formwire-docs.git
 cd formwire-docs
 npm install
 npm run dev
