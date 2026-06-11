@@ -7,7 +7,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky",
+    "release": "commit-and-tag-version"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.40.0",
@@ -15,5 +17,11 @@
     "astro": "^6.4.5",
     "sharp": "^0.34.5",
     "starlight-theme-next": "^0.4.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "commit-and-tag-version": "^12.7.3",
+    "husky": "^9.1.7"
   }
 }
