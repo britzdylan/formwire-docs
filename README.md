@@ -1,49 +1,57 @@
-# Starlight Starter Kit: Basics
+# FormWire Docs
 
 [![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
+The official documentation for [FormWire](https://formwire.app), published at [docs.formwire.app](https://docs.formwire.app).
+
+Built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build).
+
+## 📖 Contributing to the docs
+
+Spotted a typo, outdated instructions, or something missing? Contributions are welcome — open an issue or send a pull request.
+
+All documentation lives in [`src/content/docs/`](src/content/docs/) as `.mdx` files. Each file maps to a route based on its path, organized into these sections:
+
+| Directory          | Section                                       |
+| :----------------- | :-------------------------------------------- |
+| `getting-started/` | Quickstart and how FormWire works              |
+| `guides/`          | Forms, submissions, spam protection, and more |
+| `frameworks/`      | HTML, React, Next.js, Vue, and Framer setup   |
+| `integrations/`    | Slack, Zapier, webhooks, GitHub, and Framer   |
+| `billing/`         | Plans, limits, and subscription management    |
+
+Images go in `src/assets/` and are embedded with relative links. Static assets such as favicons live in `public/`.
+
+## 🚀 Running locally
+
+```sh
+git clone https://github.com/formwire/formwire-docs.git
+cd formwire-docs
+npm install
+npm run dev
 ```
-npm create astro@latest -- --template starlight
+
+The dev server starts at `localhost:4321`.
+
+| Command           | Action                                       |
+| :---------------- | :------------------------------------------- |
+| `npm install`     | Install dependencies                         |
+| `npm run dev`     | Start the local dev server                   |
+| `npm run build`   | Build the production site to `./dist/`       |
+| `npm run preview` | Preview the production build locally         |
+
+## 📝 Commit conventions
+
+This repo uses [Conventional Commits](https://www.conventionalcommits.org/), enforced by a git hook on every commit:
+
+```
+docs: clarify webhook retry behavior
+fix: correct broken link on quickstart page
+feat: add Vue integration guide
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The changelog in [CHANGELOG.md](CHANGELOG.md) is generated from these commit messages, so a well-formed message is all you need — no manual changelog edits.
 
-## 🚀 Project Structure
+## 📄 License
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
-
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
-
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
-
-Static assets, like favicons, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+The FormWire name and logo are trademarks of FormWire.
