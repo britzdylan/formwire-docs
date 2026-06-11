@@ -18,6 +18,16 @@ export default defineConfig({
         '@fontsource/geist/700.css',
       ],
       title: 'FormWire Docs',
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            defer: true,
+            src: 'https://formwire-production-umami.cguekn.easypanel.host/script.js',
+            'data-website-id': '10bb4953-ddcc-456b-b7eb-4421a6e14a23',
+          },
+        },
+      ],
       editLink: {
         baseUrl: 'https://github.com/britzdylan/formwire-docs/edit/main/',
       },
