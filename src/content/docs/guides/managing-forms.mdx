@@ -1,0 +1,65 @@
+---
+title: Managing Forms
+description: Create, configure, and manage your forms.
+sidebar:
+  order: 1
+---
+
+A form is the container for everything FormWire does on your behalf: it owns the submission endpoint, the spam and validation rules, and how submissions are delivered to you.
+
+## Creating and editing forms
+
+Create a form from the dashboard with a **name** (1–90 characters) and an optional **description**. On creation, FormWire generates the form's secret and submission endpoint.
+
+You can edit a form's configuration at any time. The available settings are below.
+
+## Configuration options
+
+| Setting | What it does |
+| --- | --- |
+| **Name** | Human label for the form (1–90 characters). |
+| **Description** | Optional notes for your own reference. |
+| **Enabled** | When off, the submission endpoint rejects all incoming submissions. |
+| **Notifications enabled** | Toggles new-submission email notifications for this form. (Sent to your FormWire account email) |
+| **Redirect URL** | Where to send visitors after a successful HTML form post. Must be a valid URL. |
+| **Success message** | Message returned on success (up to 500 characters). |
+| **Error message** | Message shown when a submission can't be accepted (up to 500 characters). |
+| **Submission limit** | A maximum submission count per time window — see below. |
+| **Validation schema** | An optional field schema — see [Schema Validation](/guides/schema-validation). |
+
+## Redirects vs. JSON responses
+
+How a submission responds depends on how it was sent:
+
+- **HTML form posts** (`application/x-www-form-urlencoded`) with a **redirect URL** set → the visitor is redirected there.
+- **JSON posts** (or HTML posts without a redirect URL) → a JSON response is returned containing the success message, submission ID, and received timestamp.
+
+## Submission limits
+
+You can cap how many submissions a form accepts within a rolling window. Set a **maximum count** and a **window type**:
+
+| Window type | Resets |
+| --- | --- |
+| `daily` | Start of each day |
+| `weekly` | Start of each week |
+| `monthly` | Start of each month |
+| `yearly` | Start of each year |
+| `all_time` | Never (a hard lifetime cap) |
+
+Once the limit is reached, further submissions are rejected until the window resets. This is separate from your **plan quota** — see [Plans & Limits](/billing/plans-and-limits).
+
+## Rotating the form secret
+
+If your form secret is exposed or abused, **reroll** it from the form's settings. A new secret is generated immediately and the old endpoint stops working. Update your frontend with the new endpoint afterward.
+
+## Deleting a form
+
+:::danger
+Deleting a form removes it and its submissions. This can't be undone — [export](/guides/exporting-data) anything you need first.
+:::
+
+## Next steps
+
+- [Submissions](/guides/submissions) — work with the data your forms collect
+- [Schema Validation](/guides/schema-validation)
+- [Email Notifications](/guides/email-notifications)

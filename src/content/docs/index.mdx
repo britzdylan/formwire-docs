@@ -1,0 +1,48 @@
+---
+title: FormWire Docs
+description: A backend for your forms — point any form at a FormWire endpoint and get storage, spam filtering, validation, notifications, and integrations.
+template: splash # Remove or comment out this line to display the site sidebar on this page.
+hero:
+  tagline: A backend for your public forms. Point your form at an endpoint — FormWire handles receiving, spam filtering, validation, storage, notifications, and forwarding.
+  actions:
+    - text: Quickstart
+      link: /getting-started/quickstart/
+      icon: rocket
+      variant: primary
+    - text: How it works
+      link: /getting-started/how-it-works/
+      icon: open-book
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Get started
+
+<CardGrid stagger>
+	<Card title="Submit in 5 minutes" icon="rocket">
+		Create a form, point your HTML at the endpoint, and watch the first
+		submission arrive. Follow the [quickstart](/getting-started/quickstart/).
+	</Card>
+	<Card title="Works with your stack" icon="seti:react">
+		Plain [HTML](/frameworks/html/), [React](/frameworks/react/),
+		[Vue](/frameworks/vue/), [Next.js](/frameworks/nextjs/), or
+		[Framer](/frameworks/framer/) — if it can POST, it works.
+	</Card>
+	<Card title="Spam stopped at the door" icon="approve-check">
+		Honeypot, timing, and threat analysis score every submission so junk never
+		reaches your inbox. See [spam protection](/guides/spam-protection/).
+	</Card>
+	<Card title="Validate your data" icon="document">
+		Attach a [schema](/guides/schema-validation/) to enforce required fields
+		and types — without ever losing a submission.
+	</Card>
+	<Card title="Send data anywhere" icon="puzzle">
+		Forward submissions to your backend, Slack, or Zapier with
+		[integrations](/integrations/).
+	</Card>
+	<Card title="Know your senders" icon="magnifier">
+		Every submission captures source, device, geo, and UTM metadata
+		automatically. Learn [how it works](/getting-started/how-it-works/).
+	</Card>
+</CardGrid>

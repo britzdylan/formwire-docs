@@ -1,0 +1,104 @@
+---
+title: How It Works
+description: Core concepts behind FormWire — forms, submissions, endpoints, and metadata.
+sidebar:
+  order: 2
+---
+
+import { Badge, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+FormWire is a backend for your client side or public forms. You don't run a server, write an API, or manage a database you simply point your form to a FormWire endpoint and we handle the rest: receiving submissions, filtering spam, validating data, storing everything, notifying you, and forwarding submissions to other tools.
+
+This page explains the core concepts. Once these click, the rest of the docs are just details.
+
+## Forms
+
+A **form** is the central object in FormWire. You create one in the dashboard, and FormWire gives it:
+
+- A unique **form secret** — a random identifier that goes in your submission URL.
+- A **submission endpoint** built from that secret.
+- A set of configuration options — success/error messages, a redirect URL, submission limits, an optional validation schema, and whether notifications are on.
+
+You can have as many forms as you like (all plans allow unlimited forms). Each form collects submissions independently.
+
+## The submission endpoint
+
+Every form has a public endpoint:
+
+```txt
+POST https://api.formwire.app/v1/submit/YOUR_FORM_SECRET
+```
+
+This endpoint is **public by design** it has no authentication, because it's called directly from your visitors' browsers. The form secret in the URL is what ties an incoming submission to your form. Anyone who has the secret can submit to the form, so treat it as semi-public (it's fine to ship it in your frontend HTML, the same way you would a third-party form action).
+
+If the secret is ever abused, you can **rotate it** from the dashboard, which immediately invalidates the old one.
+
+The endpoint accepts both:
+
+- **`application/x-www-form-urlencoded`** — a plain HTML `<form>` POST. If the form has a redirect URL configured, the visitor is redirected there after submitting.
+- **`application/json`** — a `fetch`/`axios` POST from JavaScript. Returns a JSON response.
+
+Submissions are capped at **50&nbsp;KB** per request, and empty submissions are rejected.
+
+## What happens to a submission
+
+When a submission arrives, FormWire processes it in order:
+
+<Steps>
+
+1. **Form lookup** — the secret is resolved to a form. Invalid secret → rejected.
+2. **Enabled check** — disabled forms reject submissions.
+3. **Limit checks** — the form's own submission limit and your plan's monthly quota are enforced.
+4. **Spam analysis** — honeypot, timing, and malicious-content checks produce a spam score (see [Spam Protection](/guides/spam-protection)).
+5. **Sanitization** — submitted values are cleaned.
+6. **Schema validation** — if the form has a schema, the data is validated against it (see [Schema Validation](/guides/schema-validation)).
+7. **Metadata capture** — request context is recorded (see below).
+8. **Storage and events** — the submission is saved, notifications fire, and any configured integrations are dispatched.
+
+</Steps>
+
+## Submission status
+
+Every stored submission gets a **status**, derived automatically from the spam score and validation result:
+
+| Status | When it's set |
+| --- | --- |
+| <Badge text="new" variant="success" /> | Clean submission that passed validation (or has no schema) |
+| <Badge text="pending_review" variant="caution" /> | Suspicious spam score (31–60) **or** failed validation |
+| <Badge text="spam" variant="danger" /> | High spam score (61+) |
+| <Badge text="read" variant="note" /> | You've opened it in the dashboard |
+| <Badge text="archived" /> | You've archived it |
+| <Badge text="rejected" variant="danger" /> | Marked as rejected |
+
+You can filter and re-status submissions from the dashboard — see [Submissions](/guides/submissions).
+
+## Captured metadata
+
+Alongside the form data, FormWire records context for each submission:
+
+- **Source** — IP address, user agent, referrer, and request origin. From the IP we derive approximate geo (country, region, city, timezone); from the user agent we parse device and browser.
+- **UTM parameters** — extracted from the referrer URL if present (`utm_source`, `utm_medium`, etc.).
+- **Validation** — which fields passed, failed, or weren't in the schema.
+- **Security** — spam score, the signals that contributed to it, and honeypot/timing results.
+
+This metadata powers filtering, spam handling, and analytics, and is visible on each submission's detail view.
+
+## Where to go next
+
+<CardGrid>
+	<LinkCard
+		title="Quickstart"
+		href="/getting-started/quickstart"
+		description="Get a submission flowing in minutes."
+	/>
+	<LinkCard
+		title="Managing Forms"
+		href="/guides/managing-forms"
+		description="Configure a form's behavior."
+	/>
+	<LinkCard
+		title="Framework guides"
+		href="/frameworks/react"
+		description="Wire up React, Vue, Next.js, or Framer."
+	/>
+</CardGrid>

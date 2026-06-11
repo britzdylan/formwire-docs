@@ -1,0 +1,47 @@
+---
+title: FAQ
+description: Answers to common questions about using FormWire.
+sidebar:
+  order: 6
+---
+
+## Where is my submission?
+
+If a submission isn't showing up:
+
+- **Check the status filter.** It may have been scored as `pending_review` or `spam` rather than `new`. See [Submissions](/guides/submissions).
+- **Check the form is enabled.** A disabled form rejects submissions.
+- **Check your limits.** If the form's per-form limit or your plan quota is reached, new submissions are rejected — see [Plans & Limits](/billing/plans-and-limits).
+- **Check the endpoint.** Make sure you're posting to `https://api.formwire.app/v1/submit/YOUR_FORM_SECRET` with the correct secret.
+
+## Do I need a token in the request body?
+
+No. The form **secret** in the URL identifies your form. There's no separate token or API key for submitting.
+
+## Is the submission endpoint safe to use in client-side code?
+
+Yes — it's designed to be called from the browser. The secret is semi-public, like any third-party form action. If it's ever abused, [rotate it](/guides/managing-forms).
+
+## Why was a real message marked as spam?
+
+It likely tripped a spam signal — a filled honeypot, a too-fast submission, or content that matched a threat pattern. You can re-status it, and review how scoring works in [Spam Protection](/guides/spam-protection).
+
+## What are the submission size limits?
+
+Each submission is capped at **50&nbsp;KB**. Empty submissions are rejected.
+
+## Can I upload files?
+
+File uploads aren't supported in submissions yet. (The validation schema includes a `file` type for future use.)
+
+## How do I send submissions to another tool?
+
+Use a [webhook integration](/integrations/webhooks) to forward submissions as JSON to any URL. Dedicated Slack, GitHub, and Zapier integrations are [coming soon](/integrations).
+
+## How do I get my data out?
+
+See [Exporting Data](/guides/exporting-data).
+
+## Still stuck?
+
+Email support — your support tier depends on your [plan](/billing/plans-and-limits).

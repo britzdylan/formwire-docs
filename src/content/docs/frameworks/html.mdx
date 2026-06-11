@@ -1,0 +1,61 @@
+---
+title: HTML Forms
+description: How to use FormWire with plain HTML forms.
+sidebar:
+  order: 1
+---
+
+The simplest way to use FormWire is with a standard HTML form. No JavaScript required.
+
+## Basic form
+
+Set your form's `action` attribute to your FormWire endpoint and use `method="POST"`:
+
+```html
+<form action="https://api.formwire.app/v1/submit/YOUR_FORM_SECRET" method="POST">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" required />
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required />
+
+  <label for="message">Message</label>
+  <textarea id="message" name="message"></textarea>
+
+  <button type="submit">Send</button>
+</form>
+```
+
+Each `name` attribute becomes a field in your submission data. When you submit a plain HTML form (`application/x-www-form-urlencoded`), FormWire honors the form's configured **redirect URL** if one is set, sending the visitor to your thank-you page. Otherwise it returns a JSON response.
+
+## Honeypot spam protection
+
+Add a hidden field named `_fw_hp` to catch bots. Real users never see or fill it; bots that auto-fill every field will, and the submission is scored as spam:
+
+```html
+<input
+  type="text"
+  name="_fw_hp"
+  tabindex="-1"
+  autocomplete="off"
+  style="position: absolute; left: -9999px"
+/>
+```
+
+For even better protection, add a timing field so FormWire can detect submissions that arrive suspiciously fast. See [Spam Protection](/guides/spam-protection) for both techniques.
+
+## Redirect after submission
+
+Redirects are configured **on the form**, not in your markup. Set a redirect URL in the form's settings (or via the dashboard) and FormWire will send visitors there after a successful `application/x-www-form-urlencoded` submission. See [Managing Forms](/guides/managing-forms).
+
+## Field naming
+
+- Use clear, stable `name` attributes — they become the keys in your stored submission data.
+- Field names beginning with `_fw_` are reserved for FormWire (e.g. `_fw_hp`, `_fw_loaded`) and are stripped from your stored data.
+- Submissions are limited to **50&nbsp;KB**. Empty submissions are rejected.
+
+## Next steps
+
+- [Schema Validation](/guides/schema-validation) — enforce required fields and types
+- [Spam Protection](/guides/spam-protection) — honeypot and timing checks
+- Framework guides: [React](/frameworks/react), [Vue](/frameworks/vue)

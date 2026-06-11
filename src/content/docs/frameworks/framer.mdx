@@ -1,0 +1,52 @@
+---
+title: Framer
+description: Use FormWire with a Framer site.
+sidebar:
+  order: 5
+---
+
+You can connect a Framer form to FormWire today using the standard submission endpoint. A managed Framer integration is on the way (see below).
+
+## Connecting a Framer form
+
+In Framer, add a form and set its submission behavior to send a `POST` request to your FormWire endpoint:
+
+```txt
+https://api.formwire.app/v1/submit/YOUR_FORM_SECRET
+```
+
+Map each Framer field's name to the key you want in your submission data. Framer posts form data, so FormWire will honor your form's configured redirect URL after a successful submission if one is set.
+
+For sites where you'd rather control the request yourself, use a Framer Code Component or Code Override that calls the endpoint with `fetch` — the approach is identical to the [React guide](/frameworks/react).
+
+## Honeypot
+
+Add a hidden field named `_fw_hp` to your Framer form to enable bot detection. See [Spam Protection](/guides/spam-protection).
+
+## Timing check
+
+:::caution[Native forms]
+The timing signal (`_fw_loaded`) **does not apply to Framer's native forms**. Framer routes native form submissions through its own servers before they reach your endpoint, and a native form gives you no way to stamp the page-load time as a field. There's nothing useful to add here, so skip it for native forms.
+:::
+
+Timing detection **is** useful when you build a custom form with a Framer **Code Component** that posts to FormWire directly with `fetch`. Because your code owns the request, you can record when the form loaded and include `_fw_loaded` in the payload:
+
+```tsx
+// Capture when the form mounts — the closest proxy to page-load time.
+const loadedAt = useRef(Date.now())
+
+async function handleSubmit(formData) {
+  formData.append("_fw_loaded", String(loadedAt.current))
+  await fetch("https://api.formwire.app/v1/submit/YOUR_FORM_SECRET", {
+    method: "POST",
+    body: formData,
+  })
+}
+```
+
+See [Spam Protection](/guides/spam-protection) for how the timing score works.
+
+## Next steps
+
+- [Spam protection](/guides/spam-protection)
+- [Managing Forms](/guides/managing-forms) — set a redirect URL for your thank-you page

@@ -1,0 +1,131 @@
+/*
+ * FormWire docs theme.
+ *
+ * Mirrors the design system in apps/web/app/assets/css/tailwind.css:
+ * warm paper light mode, true near-black dark mode, the committed green
+ * brand family, Geist / Geist Mono, and a 0.625rem radius.
+ *
+ * Starlight ships its styles in the `starlight` cascade layer and the
+ * starlight-theme-next plugin layers its overrides in `nextjs`. Declaring
+ * `formwire` last makes everything below win without needing !important.
+ */
+@layer starlight, nextjs, formwire;
+
+@layer formwire {
+  /* Dark mode (Starlight's default :root scheme). */
+  :root {
+    /* Fonts — matches --font-sans / --font-mono. "Geist" is the
+       @fontsource/geist family loaded in astro.config.mjs; "Geist Sans" /
+       "Geist Mono" are the families bundled by starlight-theme-next. */
+    --sl-font: 'Geist', 'Geist Sans', ui-sans-serif, system-ui, -apple-system,
+      sans-serif;
+    --sl-font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+      Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    /* Brand accent — green family */
+    --sl-color-accent-low: oklch(0.2 0.03 145); /* --brand-muted */
+    --sl-color-accent: oklch(0.72 0.18 145); /* --brand */
+    --sl-color-accent-high: oklch(0.87 0.09 145);
+
+    /* Neutrals — "true near-black for premium devtool feel" (hue 260) */
+    --sl-color-white: oklch(0.98 0 0); /* --foreground */
+    --sl-color-gray-1: oklch(0.91 0.004 260);
+    --sl-color-gray-2: oklch(0.8 0.006 260);
+    --sl-color-gray-3: oklch(0.62 0.006 260); /* --muted-foreground */
+    --sl-color-gray-4: oklch(0.42 0.005 260);
+    --sl-color-gray-5: oklch(0.25 0.004 260);
+    --sl-color-gray-6: oklch(0.17 0.003 260); /* --muted / --secondary */
+    --sl-color-gray-7: oklch(0.135 0.003 260); /* --card */
+    --sl-color-black: oklch(0.09 0.002 260); /* --background */
+
+    /* Hairlines — matches --border: oklch(1 0 0 / 8%) */
+    --sl-color-hairline-light: oklch(1 0 0 / 8%);
+    --sl-color-hairline: oklch(1 0 0 / 8%);
+
+    --sl-color-bg-sidebar: var(--sl-color-black);
+    --sl-color-bg-inline-code: var(--sl-color-gray-6); /* --muted */
+    --sl-nextjs-header-bg-color: oklch(0.09 0.002 260 / 0.6);
+
+    /* Aside / badge green tracks the brand hue (#3db44a ≈ hsl hue 127) */
+    --sl-hue-green: 127;
+
+    /* Shadows — web app --shadow-sm / --shadow-lg / --shadow-xl */
+    --sl-shadow-sm: 0 1px 3px 0px oklch(0 0 0 / 0.1),
+      0 1px 2px -1px oklch(0 0 0 / 0.1);
+    --sl-shadow-md: 0 4px 12px -2px oklch(0 0 0 / 0.08),
+      0 2px 4px -1px oklch(0 0 0 / 0.05);
+    --sl-shadow-lg: 0 20px 40px -12px oklch(0 0 0 / 0.12),
+      0 8px 16px -4px oklch(0 0 0 / 0.08);
+
+    /* Code block rounding — Expressive Code radius, matches --radius */
+    --ec-brdRad: 0.625rem;
+  }
+
+  /* Light mode — warm paper base instead of pure white. */
+  :root[data-theme='light'] {
+    /* Brand accent */
+    --sl-color-accent-low: oklch(0.97 0.02 145); /* --brand-muted */
+    --sl-color-accent: #3db44a; /* --brand */
+    --sl-color-accent-high: oklch(0.38 0.12 150); /* --brand-deep */
+
+    /* Neutrals — warm hue 95 paper */
+    --sl-color-white: oklch(0.15 0 0); /* --foreground */
+    --sl-color-gray-1: oklch(0.2 0 0); /* --secondary-foreground */
+    --sl-color-gray-2: oklch(0.27 0.006 95);
+    --sl-color-gray-3: oklch(0.48 0.008 95); /* --muted-foreground */
+    --sl-color-gray-4: oklch(0.65 0.008 95);
+    --sl-color-gray-5: oklch(0.91 0.005 95); /* --border / --input */
+    --sl-color-gray-6: oklch(0.945 0.004 95);
+    --sl-color-gray-7: oklch(0.97 0.004 95);
+    --sl-color-black: oklch(0.985 0.004 95); /* --background */
+
+    --sl-color-hairline-light: oklch(0.91 0.005 95);
+    --sl-color-hairline: oklch(0.91 0.005 95);
+
+    --sl-color-bg-inline-code: oklch(0.965 0.004 95); /* --muted */
+    --sl-nextjs-header-bg-color: oklch(0.985 0.004 95 / 0.6);
+
+    /* Shadows — lighter touch on paper, same scale as the web app */
+    --sl-shadow-sm: 0 1px 3px 0px oklch(0 0 0 / 0.05);
+    --sl-shadow-md: 0 1px 3px 0px oklch(0 0 0 / 0.1),
+      0 2px 4px -1px oklch(0 0 0 / 0.1);
+    --sl-shadow-lg: 0 4px 12px -2px oklch(0 0 0 / 0.08),
+      0 2px 4px -1px oklch(0 0 0 / 0.05);
+  }
+
+  /* Typography rendering — matches the web app's body settings */
+  body {
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Rounded components use the web app's --radius (0.625rem) instead of
+     the theme's 0.5rem / Starlight's pill buttons. */
+  .sl-markdown-content .card,
+  .starlight-aside,
+  .sl-banner,
+  .sl-markdown-content starlight-file-tree,
+  :is(.hero, .sl-markdown-content) .sl-link-button {
+    border-radius: 0.625rem;
+  }
+
+  /* Primary buttons read as the brand green, like the web app's CTAs. */
+  :is(.hero, .sl-markdown-content) .sl-link-button.primary {
+    background-color: var(--sl-color-accent); /* --brand */
+    border-color: var(--sl-color-accent);
+    color: oklch(0.09 0 0); /* --brand-foreground (dark) */
+  }
+
+  :root[data-theme='light']
+    :is(.hero, .sl-markdown-content)
+    .sl-link-button.primary {
+    color: oklch(1 0 0); /* --brand-foreground (light) */
+  }
+
+  :is(.hero, .sl-markdown-content)
+    .sl-link-button.primary:is(:hover, :focus-visible) {
+    background-color: var(--sl-color-accent-high);
+    border-color: var(--sl-color-accent-high);
+  }
+}

@@ -1,0 +1,69 @@
+---
+title: Schema Validation
+description: Validate submissions against a form schema.
+sidebar:
+  order: 3
+---
+
+By default, FormWire accepts any fields you send (schemaless mode). If you want to enforce structure — required fields and specific types — attach a **validation schema** to your form.
+
+Validation never blocks storage. Submissions that fail validation are still stored, but flagged: they're given the `pending_review` status and their errors are recorded so you can see exactly what went wrong.
+
+## Defining a schema
+
+A schema is a set of named fields, each with a **type** and whether it's **required**:
+
+```json
+{
+  "fields": {
+    "email":   { "type": "email",  "required": true },
+    "name":    { "type": "string", "required": true },
+    "age":     { "type": "number", "required": false },
+    "website": { "type": "url",    "required": false }
+  }
+}
+```
+
+A field that isn't required may be omitted; if present, it must still match its type.
+
+## Field types
+
+| Type | Validates |
+| --- | --- |
+| `string` | Non-empty text (default) |
+| `number` | A number |
+| `boolean` | A boolean |
+| `accepted` | A "truthy" acceptance value (e.g. a checked checkbox) |
+| `date` | A valid date |
+| `email` | An email address (normalized) |
+| `alpha` | Letters only |
+| `alphaNumeric` | Letters and numbers only |
+| `confirmed` | Matches a `<field>_confirmation` companion field |
+| `ipAddress` | An IP address |
+| `uuid` | A UUID |
+| `creditCard` | A credit card number |
+| `hexCode` | A hex color code |
+| `iban` | An IBAN |
+| `coordinates` | Geographic coordinates |
+| `mobileNumber` | A mobile phone number (strict) |
+| `url` | A URL with `http`/`https` protocol |
+
+## Validation outcomes
+
+Each validated submission gets a validation status:
+
+| Status | Meaning |
+| --- | --- |
+| `not_validated` | The form has no schema (schemaless mode). |
+| `validated` | All known fields passed and no unexpected fields were sent. |
+| `partially_validated` | Known fields passed, but the submission included fields not in the schema. |
+| `failed` | One or more fields failed validation. |
+
+## Unknown fields are allowed
+
+FormWire validates the fields you define but doesn't reject extra ones. If a submission includes fields outside your schema, they're stored and recorded as **unknown fields**, and the status becomes `partially_validated`. This keeps forms flexible — you can validate what matters without breaking when new fields appear.
+
+## Next steps
+
+- [Managing Forms](/guides/managing-forms) — attach a schema to a form
+- [Submissions](/guides/submissions) — review validation results

@@ -1,0 +1,84 @@
+---
+title: Quickstart
+description: Get your first form submission in under 5 minutes.
+sidebar:
+  order: 1
+---
+import { LinkButton, LinkCard, CardGrid, Steps } from '@astrojs/starlight/components';
+
+Get your first form submission flowing in under 5 minutes.
+
+<Steps>
+
+1. ### Create an account
+
+   <LinkButton
+     href="https://portal.formwire.app/auth/signup"
+     variant="primary"
+     icon="external"
+     iconPlacement="start"
+   >
+     Sign up for a free FormWire account
+   </LinkButton>
+
+2. ### Create a form
+
+   From your dashboard, click **New Form** and give it a name. FormWire generates a unique **form secret** and a submission endpoint for you.
+
+   Your endpoint will look like:
+
+   ```txt
+   https://api.formwire.app/v1/submit/YOUR_FORM_SECRET
+   ```
+
+   You can copy it straight from the form's settings.
+
+3. ### Add to your frontend
+
+   Point any HTML form at your FormWire endpoint:
+
+   ```html
+   <form action="https://api.formwire.app/v1/submit/YOUR_FORM_SECRET" method="POST">
+     <input type="text" name="name" placeholder="Your name" required />
+     <input type="email" name="email" placeholder="Your email" required />
+     <textarea name="message" placeholder="Your message"></textarea>
+     <button type="submit">Send</button>
+   </form>
+   ```
+
+   Each `name` attribute becomes a field in your submission data.
+
+4. ### Submit and verify
+
+   Open your form in a browser, fill it out, and submit. Head back to your FormWire dashboard you should see the submission appear, along with the captured metadata.
+
+</Steps>
+
+:::tip[Want a thank-you page?]
+By default, a plain HTML form post gets a JSON response. To send visitors to a thank-you page instead, set a **redirect URL** on the form (see [Managing Forms](/guides/managing-forms)).
+:::
+
+## Next steps
+
+<CardGrid>
+	<LinkCard
+		title="Spam protection"
+		href="/guides/spam-protection"
+		description="Add a honeypot and timing field to keep bots out."
+	/>
+	<LinkCard
+		title="Email notifications"
+		href="/guides/email-notifications"
+		description="Get an email the moment a submission arrives."
+	/>
+	<LinkCard
+		title="Webhook integrations"
+		href="/integrations/webhooks"
+		description="Forward submissions to your own backend or tools."
+	/>
+	<LinkCard
+		title="Framework guides"
+		href="/frameworks/react"
+		description="Wire up React, Vue, Next.js, or Framer."
+	/>
+</CardGrid>

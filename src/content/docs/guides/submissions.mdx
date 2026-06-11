@@ -1,0 +1,54 @@
+---
+title: Submissions
+description: View, filter, and manage form submissions.
+sidebar:
+  order: 2
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+Every accepted submission is stored with its form data plus the metadata FormWire captures (validation, spam signals, and source). This guide covers working with them in the dashboard.
+
+## Submission status
+
+Each submission has a status. Some are assigned automatically when the submission is received; others you set yourself.
+
+| Status | Meaning |
+| --- | --- |
+| <Badge text="new" variant="success" /> | Accepted, clean, and valid — your default inbox. |
+| <Badge text="pending_review" variant="caution" /> | Flagged for a look: a suspicious spam score (31–60) or failed schema validation. |
+| <Badge text="spam" variant="danger" /> | High spam score (61+). |
+| <Badge text="read" variant="note" /> | You've opened it. |
+| <Badge text="archived" /> | Set aside but kept. |
+| <Badge text="rejected" variant="danger" /> | Marked as rejected. |
+
+You can update a submission's status from its detail view.
+
+## Submission detail
+
+Opening a submission shows:
+
+- **Data** — the submitted fields.
+- **Validation** — which fields passed, which failed and why, and any fields not in your schema.
+- **Security** — the spam score, the signals that contributed to it, and honeypot/timing results.
+- **Source** — IP address, user agent, referrer, origin, derived geo (country/region/city/timezone), parsed device/browser, and any UTM parameters.
+
+ {/* ## Bulk actions
+
+Select multiple submissions to act on them together — for example archiving or deleting a batch at once. --> */}
+
+## Deleting submissions
+
+:::danger
+Deleting a submission is permanent. If you need a record, [export](/guides/exporting-data) first.
+:::
+
+## Retrying integrations
+
+If a submission was supposed to be forwarded to an integration but delivery failed, you can **retry** delivery from the submission. FormWire re-dispatches to the integrations that previously failed for that submission. See [Integrations](/integrations).
+
+## Next steps
+
+- [Exporting Data](/guides/exporting-data)
+- [Spam Protection](/guides/spam-protection)
+- [Integrations](/integrations)

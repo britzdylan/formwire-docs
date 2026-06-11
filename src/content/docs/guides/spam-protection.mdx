@@ -1,0 +1,84 @@
+---
+title: Spam Protection
+description: Protect your forms from spam and bot submissions.
+sidebar:
+  order: 4
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+FormWire scores every submission for spam as it arrives. The score drives the submission's status, so spam is separated from real messages without you lifting a finger.
+
+## How scoring works
+
+Each submission starts at a score of 0. Signals add to it:
+
+| Signal | Points | Trigger |
+| --- | --- | --- |
+| Honeypot triggered | +80 | The `_fw_hp` field was filled in |
+| Suspiciously fast | +40 | Submitted less than 2 seconds after the form loaded |
+| Malicious content | varies | Threat patterns detected in the data (e.g. SQL injection, XSS) |
+
+The score is capped at 100 and mapped to a status:
+
+| Score | Spam status | Submission status |
+| --- | --- | --- |
+| 0–30 | `clean` | <Badge text="new" variant="success" /> (if valid) |
+| 31–60 | `suspicious` | <Badge text="pending_review" variant="caution" /> |
+| 61–100 | `confirmed_spam` | <Badge text="spam" variant="danger" /> |
+
+:::note[Nothing is silently dropped]
+Even `spam` submissions are stored so you can review them.
+:::
+
+## Honeypot field
+
+A honeypot is a hidden field real users never touch but bots tend to fill. Add a field named **`_fw_hp`** and hide it with CSS (don't use `type="hidden"` — some bots skip those):
+
+```html
+<input
+  type="text"
+  name="_fw_hp"
+  tabindex="-1"
+  autocomplete="off"
+  style="position: absolute; left: -9999px"
+  aria-hidden="true"
+/>
+```
+
+If this field arrives with any value, the submission gets +80 — enough to mark it as spam on its own. FormWire strips `_fw_hp` from your stored data.
+
+## Timing check
+
+Bots submit instantly; humans take a few seconds. Record when the form loaded in a field named **`_fw_loaded`** (a millisecond timestamp), and FormWire flags submissions that arrive in under 2 seconds:
+
+```html
+<input type="hidden" name="_fw_loaded" value="" />
+<script>
+  document.currentScript.previousElementSibling.value = Date.now();
+</script>
+```
+
+A suspiciously fast submission adds +40 to the score. Like the honeypot, `_fw_loaded` is stripped from your stored data.
+
+:::caution[Framer]
+The timing check doesn't apply to Framer's native forms — they're routed through Framer's own servers and give you no way to stamp the load time. It only helps when you build a custom form with a Framer Code Component that posts to FormWire directly. See the [Framer guide](/frameworks/framer#timing-check).
+:::
+
+## Malicious content detection
+
+FormWire inspects submitted values for threat patterns (such as SQL injection and cross-site scripting attempts). When detected, they contribute to the spam score and are recorded in the submission's security details.
+
+## Reviewing spam
+
+Filter the [submissions](/guides/submissions) view by status to triage:
+
+- <Badge text="pending_review" variant="caution" /> — borderline; worth a glance.
+- <Badge text="spam" variant="danger" /> — high-confidence spam.
+
+If something legitimate was misflagged, you can re-status it.
+
+## Next steps
+
+- [Submissions](/guides/submissions) — review and re-status flagged submissions
+- [Schema Validation](/guides/schema-validation) — reject malformed data structurally

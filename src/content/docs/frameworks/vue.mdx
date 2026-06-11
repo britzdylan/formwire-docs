@@ -1,0 +1,58 @@
+---
+title: Vue
+description: Use FormWire with a Vue application.
+sidebar:
+  order: 3
+---
+
+FormWire works with any Vue form. Collect your fields, post them as JSON to your submission endpoint, and react to the response.
+
+## Basic example
+
+```vue
+<script setup>
+import { reactive, ref } from "vue";
+
+const ENDPOINT = "https://api.formwire.app/v1/submit/YOUR_FORM_SECRET";
+
+const form = reactive({ name: "", email: "", message: "", _fw_hp: "" });
+const status = ref("idle");
+
+async function submit() {
+  status.value = "submitting";
+  const res = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(form),
+  });
+  status.value = res.ok ? "success" : "error";
+}
+</script>
+
+<template>
+  <p v-if="status === 'success'">Thanks for your message!</p>
+  <form v-else @submit.prevent="submit">
+    <input v-model="form.name" placeholder="Your name" required />
+    <input v-model="form.email" type="email" placeholder="Your email" required />
+    <textarea v-model="form.message" placeholder="Your message" />
+    <!-- Honeypot — hidden from real users -->
+    <input
+      v-model="form._fw_hp"
+      tabindex="-1"
+      autocomplete="off"
+      style="position: absolute; left: -9999px"
+    />
+    <button :disabled="status === 'submitting'">Send</button>
+    <p v-if="status === 'error'">Something went wrong. Please try again.</p>
+  </form>
+</template>
+```
+
+## Handling the response
+
+A JSON submission returns an envelope with `success`, `message`, and a `data` object containing `submissionId`, `receivedAt`, and `redirectUrl`. On failure the response is non-2xx with `success: false` — check `res.ok` and show the `message`.
+
+## Next steps
+
+- [Spam protection](/guides/spam-protection)
+- [Schema validation](/guides/schema-validation)

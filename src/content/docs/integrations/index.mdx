@@ -1,0 +1,60 @@
+---
+title: Integrations
+description: Forward submissions to the tools you already use.
+sidebar:
+  order: 1
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Integrations let FormWire forward each new submission to another system automatically — so a submission can land in your own backend, a workflow tool, or a chat channel the moment it arrives.
+
+## Available now
+
+<LinkCard
+	title="Webhooks"
+	href="/integrations/webhooks"
+	description="Send submissions as JSON to any URL, with optional custom authentication headers. The most flexible integration and the foundation for connecting almost anything."
+/>
+
+## Coming soon
+
+These providers can be set up in the dashboard but don't yet deliver automatically. They're in active development:
+
+<CardGrid>
+	<LinkCard
+		title="Slack"
+		href="/integrations/slack"
+		description="Post new submissions to a channel."
+	/>
+	<LinkCard
+		title="GitHub"
+		href="/integrations/github"
+		description="Connect submissions to your repos."
+	/>
+	<LinkCard
+		title="Zapier"
+		href="/integrations/zapier"
+		description="Reach thousands of apps via Zaps."
+	/>
+	<LinkCard
+		title="Framer"
+		href="/integrations/framer"
+		description="A managed Framer connection (beta)."
+	/>
+</CardGrid>
+
+:::tip
+In the meantime, a [webhook](/integrations/webhooks) can reach most of these — for example, posting to a Slack incoming webhook URL or a Zapier "Catch Hook" trigger.
+:::
+
+## How integrations work
+
+- You create an integration once, then attach it to one or more forms.
+- When a submission is received, FormWire dispatches it to each active integration attached to that form.
+- An integration can be toggled **active/inactive** without deleting it.
+- If a delivery fails, you can **retry** it from the submission — see [Submissions](/guides/submissions).
+
+## Data forwarded
+
+When you enable an integration you instruct FormWire to send submission data to a destination outside our control, governed by that provider's own terms. You're responsible for the destinations you choose. See the [Terms of Service](/terms) and [Privacy Policy](/privacy).

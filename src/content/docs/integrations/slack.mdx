@@ -1,0 +1,33 @@
+---
+title: Slack
+description: Send new submissions to a Slack channel.
+sidebar:
+  order: 3
+  badge:
+    text: Soon
+    variant: caution
+---
+import { Steps } from '@astrojs/starlight/components';
+
+:::note[Coming soon]
+A dedicated Slack integration is in development. This page will cover connecting and configuring it once it ships.
+:::
+
+## Use a webhook today
+
+You can already post submissions to Slack using an incoming webhook:
+
+<Steps>
+
+1. In Slack, create an **Incoming Webhook** and copy its URL.
+2. In FormWire, create a [webhook integration](/integrations/webhooks) pointing at that URL.
+3. Attach it to the forms you want to notify a channel.
+
+</Steps>
+
+New submissions will be delivered to Slack as JSON. The dedicated integration will add nicely formatted messages and channel selection.
+
+## Next steps
+
+- [Webhooks](/integrations/webhooks)
+- [Integrations overview](/integrations)
