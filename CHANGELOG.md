@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.7](https://github.com/britzdylan/formwire-docs/compare/v0.0.6...v0.0.7) (2026-06-11)
+
+
+### Features
+
+* add script tag to head for analytics tracking ([f671650](https://github.com/britzdylan/formwire-docs/commit/f671650ae9fb2ff40b8e486e20c93d2a7fabb3c8))
+
 ## [0.0.6](https://github.com/britzdylan/formwire-docs/compare/v0.0.5...v0.0.6) (2026-06-11)
 
 
