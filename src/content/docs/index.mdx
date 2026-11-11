@@ -1,9 +1,9 @@
 ---
 title: FormWire Docs
-description: A backend for your forms — point any form at a FormWire endpoint and get storage, spam filtering, validation, notifications, and integrations.
+description: FormWire is a backend for your forms. Point any form at a FormWire endpoint to store submissions, filter spam, validate fields, get notified, and forward data to other tools.
 template: splash # Remove or comment out this line to display the site sidebar on this page.
 hero:
-  tagline: A backend for your public forms. Point your form at an endpoint — FormWire handles receiving, spam filtering, validation, storage, notifications, and forwarding.
+  tagline: A backend for your forms. Point a form at your FormWire endpoint and we store each submission, score it for spam, validate it, notify you, and forward it to your other tools.
   actions:
     - text: Quickstart
       link: /getting-started/quickstart/
@@ -20,29 +20,30 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 ## Get started
 
 <CardGrid stagger>
-	<Card title="Submit in 5 minutes" icon="rocket">
-		Create a form, point your HTML at the endpoint, and watch the first
-		submission arrive. Follow the [quickstart](/getting-started/quickstart/).
+	<Card title="Receive your first submission" icon="rocket">
+		Create a form, set your HTML form's `action` to the endpoint, and submit.
+		The [quickstart](/getting-started/quickstart/) takes about five minutes.
 	</Card>
-	<Card title="Works with your stack" icon="seti:react">
-		Plain [HTML](/frameworks/html/), [React](/frameworks/react/),
-		[Vue](/frameworks/vue/), [Next.js](/frameworks/nextjs/), or
-		[Framer](/frameworks/framer/) — if it can POST, it works.
+	<Card title="Use your own stack" icon="seti:react">
+		There are guides for [HTML](/frameworks/html/), [React](/frameworks/react/),
+		[Vue](/frameworks/vue/), [Next.js](/frameworks/nextjs/), and
+		[Framer](/frameworks/framer/). Anything that can send a `POST` request works.
 	</Card>
-	<Card title="Spam stopped at the door" icon="approve-check">
-		Honeypot, timing, and threat analysis score every submission so junk never
-		reaches your inbox. See [spam protection](/guides/spam-protection/).
+	<Card title="Filter spam" icon="approve-check">
+		Every submission gets a spam score from a honeypot field, a timing check,
+		and content analysis. See [spam protection](/guides/spam-protection/).
 	</Card>
-	<Card title="Validate your data" icon="document">
-		Attach a [schema](/guides/schema-validation/) to enforce required fields
-		and types — without ever losing a submission.
+	<Card title="Validate fields" icon="document">
+		Add a [schema](/guides/schema-validation/) to require fields and check
+		their types. Submissions that fail are flagged for review and still stored.
 	</Card>
-	<Card title="Send data anywhere" icon="puzzle">
-		Forward submissions to your backend, Slack, or Zapier with
-		[integrations](/integrations/).
+	<Card title="Forward submissions" icon="puzzle">
+		Send each submission to your own backend, Slack, or Zapier with a
+		[webhook integration](/integrations/).
 	</Card>
-	<Card title="Know your senders" icon="magnifier">
-		Every submission captures source, device, geo, and UTM metadata
-		automatically. Learn [how it works](/getting-started/how-it-works/).
+	<Card title="See where submissions come from" icon="magnifier">
+		Each submission records its referrer, location, device, and UTM
+		parameters. [How it works](/getting-started/how-it-works/) lists
+		everything that is captured.
 	</Card>
 </CardGrid>

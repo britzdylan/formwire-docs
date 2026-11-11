@@ -1,36 +1,41 @@
 ---
 title: Plans & Limits
-description: Compare plans and understand usage limits.
+description: What each plan includes, how the monthly submission quota is counted, and what happens when you reach it.
 sidebar:
   order: 1
 ---
 
-FormWire plans differ mainly by how many submissions you can receive per billing period. All plans include **unlimited forms**.
+FormWire has three plans. They differ in how many submissions you can receive each month, how many people you can forward notifications to, and the support you get. Every plan includes unlimited forms.
 
 ## Plans
 
-| Plan | Submissions / period | Forms | Support |
-| --- | --- | --- | --- |
-| **Starter** | 50 | Unlimited | Community |
-| **Pro** | 5,000 | Unlimited | Email |
-| **Business** | 50,000 | Unlimited | Priority |
+| Plan | Submissions per month | Forms | Notification recipients per form | Support |
+| --- | --- | --- | --- | --- |
+| **Starter** | 50 | Unlimited | None | Community |
+| **Pro** | 5,000 | Unlimited | 3 | Email |
+| **Business** | 50,000 | Unlimited | 10 | Priority |
 
-See the [pricing page](/pricing) for current prices.
+Starter is free. See the [pricing page](https://formwire.app/pricing) for current prices.
 
 ## How the submission quota works
 
-Your plan's submission limit is counted across **all your forms** within the current billing period. When you reach it, new submissions are rejected until the period resets or you upgrade.
+Your quota counts the submissions stored across all of your forms in the current period. Submissions flagged as spam or pending review count, because they are stored.
 
-This is separate from a **per-form submission limit**, which you can set yourself to cap an individual form on a daily/weekly/monthly/yearly basis — see [Managing Forms](/guides/managing-forms).
+- On **Pro** and **Business**, the period is your billing period.
+- On **Starter**, the period is the calendar month.
+
+Your usage for the current period is shown in your billing settings.
 
 ## What happens at the limit
 
-- **Per-form limit reached** → that form rejects submissions until its window resets.
-- **Plan quota reached** → all forms reject new submissions until the billing period resets or you upgrade.
+There are two limits, and they work independently:
 
-Rejected submissions are not stored and don't count toward usage.
+- **Your plan's quota.** When your account reaches it, all of your forms reject new submissions until the period resets or you upgrade.
+- **A form's own limit.** You can set a limit on a single form. When the form reaches it, that form rejects new submissions until its window resets. See [Managing Forms](/guides/managing-forms#submission-limits).
+
+A rejected submission is not stored and can't be recovered, and it doesn't count toward your usage. The sender gets a `429` response. The [React guide](/frameworks/react#handle-the-response) lists the error codes.
 
 ## Next steps
 
 - [Managing Your Subscription](/billing/managing-subscription)
-- [Managing Forms](/guides/managing-forms) — set per-form limits
+- [Managing Forms](/guides/managing-forms) explains how to limit a single form.

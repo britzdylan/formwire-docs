@@ -1,51 +1,53 @@
 ---
 title: Submissions
-description: View, filter, and manage form submissions.
+description: Review, filter, re-status, and delete form submissions, and retry failed integration deliveries.
 sidebar:
   order: 2
 ---
 
 import { Badge } from '@astrojs/starlight/components';
 
-Every accepted submission is stored with its form data plus the metadata FormWire captures (validation, spam signals, and source). This guide covers working with them in the dashboard.
+FormWire stores every accepted submission with its form data and the metadata it captured. This page explains how to work with submissions in the dashboard.
+
+## Find submissions
+
+Open a form and go to its **Submissions** tab to see everything that form has received. Use the search box to narrow the list. Search matches the submitted values, the status, the spam status, and the country, so searching for `spam` shows the submissions with that status.
 
 ## Submission status
 
-Each submission has a status. Some are assigned automatically when the submission is received; others you set yourself.
+FormWire sets a submission's first status when it arrives. You can change the status afterward.
 
 | Status | Meaning |
 | --- | --- |
-| <Badge text="new" variant="success" /> | Accepted, clean, and valid — your default inbox. |
-| <Badge text="pending_review" variant="caution" /> | Flagged for a look: a suspicious spam score (31–60) or failed schema validation. |
-| <Badge text="spam" variant="danger" /> | High spam score (61+). |
-| <Badge text="read" variant="note" /> | You've opened it. |
-| <Badge text="archived" /> | Set aside but kept. |
-| <Badge text="rejected" variant="danger" /> | Marked as rejected. |
+| <Badge text="new" variant="success" /> | The submission is clean and valid, and you haven't opened it yet. |
+| <Badge text="pending_review" variant="caution" /> | The spam score is 31 to 60, or the submission failed schema validation. |
+| <Badge text="spam" variant="danger" /> | The spam score is 61 or higher. |
+| <Badge text="read" variant="note" /> | You opened it. Opening a `new` submission marks it as read. |
+| <Badge text="archived" /> | You archived it. It stays stored. |
+| <Badge text="rejected" variant="danger" /> | You rejected it. |
 
-You can update a submission's status from its detail view.
+To change a status, open the submission and use **Set status**.
 
-## Submission detail
+## Submission details
 
-Opening a submission shows:
+Opening a submission shows four groups of information:
 
-- **Data** — the submitted fields.
-- **Validation** — which fields passed, which failed and why, and any fields not in your schema.
-- **Security** — the spam score, the signals that contributed to it, and honeypot/timing results.
-- **Source** — IP address, user agent, referrer, origin, derived geo (country/region/city/timezone), parsed device/browser, and any UTM parameters.
+- **Data** is the submitted fields.
+- **Validation** shows which fields passed, which failed and why, and which fields were not in your schema.
+- **Security** shows the spam score, the signals that raised it, and the honeypot and timing results.
+- **Source** shows the IP address, user agent, referrer, origin, approximate location, device and browser, and any UTM parameters.
 
- {/* ## Bulk actions
-
-Select multiple submissions to act on them together — for example archiving or deleting a batch at once. --> */}
-
-## Deleting submissions
+## Delete a submission
 
 :::danger
-Deleting a submission is permanent. If you need a record, [export](/guides/exporting-data) first.
+Deleting a submission is permanent. [Export](/guides/exporting-data) it first if you need a record.
 :::
 
-## Retrying integrations
+## Retry a failed integration
 
-If a submission was supposed to be forwarded to an integration but delivery failed, you can **retry** delivery from the submission. FormWire re-dispatches to the integrations that previously failed for that submission. See [Integrations](/integrations).
+If an [integration](/integrations) failed to deliver a submission, open the submission and click **Retry failed**. FormWire sends the submission again to the integrations that failed. Integrations that already succeeded are not called again.
+
+Integrations only deliver submissions whose status is `new`. If the delivery failed because the submission was flagged as spam or pending review, set its status to `new` before you retry.
 
 ## Next steps
 

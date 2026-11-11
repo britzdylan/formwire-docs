@@ -1,15 +1,15 @@
 ---
 title: HTML Forms
-description: How to use FormWire with plain HTML forms.
+description: Send a plain HTML form to FormWire without any JavaScript.
 sidebar:
   order: 1
 ---
 
-The simplest way to use FormWire is with a standard HTML form. No JavaScript required.
+A standard HTML form can submit to FormWire directly. You don't need JavaScript.
 
 ## Basic form
 
-Set your form's `action` attribute to your FormWire endpoint and use `method="POST"`:
+Set the form's `action` to your FormWire endpoint and its `method` to `POST`:
 
 ```html
 <form action="https://api.formwire.app/v1/submit/YOUR_FORM_SECRET" method="POST">
@@ -26,11 +26,15 @@ Set your form's `action` attribute to your FormWire endpoint and use `method="PO
 </form>
 ```
 
-Each `name` attribute becomes a field in your submission data. When you submit a plain HTML form (`application/x-www-form-urlencoded`), FormWire honors the form's configured **redirect URL** if one is set, sending the visitor to your thank-you page. Otherwise it returns a JSON response.
+Each `name` attribute becomes a field in the stored submission.
 
-## Honeypot spam protection
+## Redirect after submitting
 
-Add a hidden field named `_fw_hp` to catch bots. Real users never see or fill it; bots that auto-fill every field will, and the submission is scored as spam:
+By default, the visitor sees a JSON response after submitting. To send them to a thank-you page, set a **redirect URL** in the form's settings in the FormWire dashboard. You don't add anything to your markup. See [Managing Forms](/guides/managing-forms).
+
+## Spam protection
+
+Add a field named `_fw_hp` and hide it with CSS. People never see it, and bots that fill in every field give themselves away:
 
 ```html
 <input
@@ -39,23 +43,20 @@ Add a hidden field named `_fw_hp` to catch bots. Real users never see or fill it
   tabindex="-1"
   autocomplete="off"
   style="position: absolute; left: -9999px"
+  aria-hidden="true"
 />
 ```
 
-For even better protection, add a timing field so FormWire can detect submissions that arrive suspiciously fast. See [Spam Protection](/guides/spam-protection) for both techniques.
+You can also add a timing field that lets FormWire flag forms submitted within 2 seconds of loading. [Spam Protection](/guides/spam-protection) covers both fields.
 
-## Redirect after submission
+## Field names
 
-Redirects are configured **on the form**, not in your markup. Set a redirect URL in the form's settings (or via the dashboard) and FormWire will send visitors there after a successful `application/x-www-form-urlencoded` submission. See [Managing Forms](/guides/managing-forms).
-
-## Field naming
-
-- Use clear, stable `name` attributes — they become the keys in your stored submission data.
-- Field names beginning with `_fw_` are reserved for FormWire (e.g. `_fw_hp`, `_fw_loaded`) and are stripped from your stored data.
-- Submissions are limited to **50&nbsp;KB**. Empty submissions are rejected.
+- Choose `name` attributes you won't need to change, because they become the keys in your stored data.
+- FormWire reserves the names `_fw_hp` and `_fw_loaded` and removes those fields before storing a submission.
+- A submission can be at most **50&nbsp;KB** and must contain at least one field.
 
 ## Next steps
 
-- [Schema Validation](/guides/schema-validation) — enforce required fields and types
-- [Spam Protection](/guides/spam-protection) — honeypot and timing checks
-- Framework guides: [React](/frameworks/react), [Vue](/frameworks/vue)
+- [Schema Validation](/guides/schema-validation) explains how to require fields and check types.
+- [Spam Protection](/guides/spam-protection) explains the honeypot and timing checks.
+- [React](/frameworks/react) and [Vue](/frameworks/vue) show how to submit with JavaScript.

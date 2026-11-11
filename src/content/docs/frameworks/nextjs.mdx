@@ -1,13 +1,15 @@
 ---
 title: Next.js
-description: Use FormWire with a Next.js application.
+description: Submit to FormWire from a Next.js Client Component or a Server Action.
 sidebar:
   order: 4
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-FormWire works in both the browser and on the server, so you can submit from a Client Component or from a Server Action.
+In Next.js, you can submit to FormWire from the browser in a Client Component or from your server in a Server Action.
+
+Submit from a Client Component unless you have a reason not to. FormWire then sees each visitor's own request, so the location, device, and referrer it records are theirs.
 
 <Tabs>
 <TabItem label="Client Component" icon="seti:react">
@@ -33,12 +35,22 @@ export function ContactForm() {
     setStatus(res.ok ? "success" : "error");
   }
 
+  if (status === "success") return <p>Thanks for your message!</p>;
+
   return (
     <form onSubmit={handleSubmit}>
       <input name="email" type="email" required />
       <textarea name="message" />
-      <input name="_fw_hp" tabIndex={-1} autoComplete="off" hidden />
+      {/* Honeypot field, hidden from people */}
+      <input
+        name="_fw_hp"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px" }}
+      />
       <button disabled={status === "submitting"}>Send</button>
+      {status === "error" && <p>Something went wrong. Please try again.</p>}
     </form>
   );
 }
@@ -47,7 +59,7 @@ export function ContactForm() {
 </TabItem>
 <TabItem label="Server Action" icon="forward-slash">
 
-Submitting from a Server Action keeps your form secret off the client entirely:
+A Server Action sends the submission from your server, so the form secret never reaches the browser:
 
 ```jsx title="app/contact/actions.js"
 "use server";
@@ -80,14 +92,21 @@ export default function ContactPage() {
 }
 ```
 
-:::caution
-Store the secret in an environment variable (e.g. `FORMWIRE_SECRET`) rather than hardcoding it.
+Store the secret in an environment variable such as `FORMWIRE_SECRET`.
+
+:::caution[What changes when you submit from your server]
+FormWire sees your server's request, not the visitor's. This has two effects:
+
+- The IP address, location, device, and referrer stored with each submission describe your server.
+- The limit of 30 requests per minute per IP address applies to your server as a whole, across all of your visitors.
 :::
 
 </TabItem>
 </Tabs>
 
+The response is the same in both cases. The [React guide](/frameworks/react#handle-the-response) shows it and lists the error codes.
+
 ## Next steps
 
-- [Spam protection](/guides/spam-protection)
-- [Schema validation](/guides/schema-validation)
+- [Spam Protection](/guides/spam-protection)
+- [Schema Validation](/guides/schema-validation)

@@ -1,47 +1,55 @@
 ---
 title: Security & Privacy
-description: How FormWire handles your data and your end users' data.
+description: What data FormWire stores, who is responsible for it, and how it is protected.
 sidebar:
   order: 5
 ---
 
-A short, practical summary of how FormWire treats data. The authoritative documents are the [Privacy Policy](/privacy) and [Terms of Service](/terms).
+This page summarizes how FormWire handles data. The [Privacy Policy](https://formwire.app/privacy) and [Terms of Service](https://formwire.app/terms) are the binding documents.
 
-## Two roles: controller and processor
+## Who is responsible for which data
 
-FormWire handles two kinds of personal data, with different responsibilities:
+FormWire handles two kinds of personal data, and the responsibility differs for each:
 
-- **Your account data** (your email, name, billing). Here FormWire is the **controller**.
-- **Submissions to your forms** (data from your visitors). Here **you** are the controller and FormWire is the **processor**, handling that data on your instructions.
+- **Your account data** is your email address, name, and billing details. FormWire is the **controller** of this data.
+- **Your form submissions** are the data your visitors send. You are the **controller** of this data, and FormWire is the **processor** that handles it on your instructions.
 
-As the controller of your form data, you're responsible for having a lawful basis to collect it, telling your visitors about it (e.g. a privacy notice on your site), and handling their data-subject requests. A Data Processing Agreement (DPA) covering FormWire's processor role is available on request.
+As the controller of your submissions, you need a lawful basis for collecting them. You also need to tell your visitors what you collect, for example in a privacy notice on your site, and respond to their requests about their data.
 
-## What we capture with submissions
+A Data Processing Agreement (DPA) that covers FormWire's role as processor is available on request.
 
-Alongside your form fields, FormWire records technical metadata for each submission: IP address, user agent, referrer, and request origin, plus derived geo and device information and any UTM parameters. This supports spam filtering, validation, and analytics. See [How It Works](/getting-started/how-it-works).
+## What FormWire stores with each submission
 
-## What we don't do
+FormWire stores your form fields and these details about the request:
 
-- We don't sell personal data.
-- We don't use your form submissions to train AI models.
-- We don't read your submissions except where necessary to operate the service (e.g. automated spam analysis or debugging an issue you raise).
+- IP address, user agent, referrer, and request origin
+- Approximate location and device information, derived from the IP address and user agent
+- UTM parameters from the referrer
+
+FormWire shows these details to you on each submission. Mention them in your own privacy notice. [How It Works](/getting-started/how-it-works#captured-metadata) has the full list.
+
+## What FormWire doesn't do
+
+- FormWire doesn't sell personal data.
+- FormWire doesn't use your submissions to train AI models.
+- FormWire staff don't read your submissions, except when that is needed to run the service, such as debugging a problem you report. Automated spam analysis does process every submission.
 
 ## Security measures
 
-- Encryption in transit (TLS) for all traffic.
-- Passwords stored only as salted hashes.
-- Access controls on production data.
-- Spam and threat detection on inbound submissions.
+- All traffic is encrypted in transit with TLS.
+- Passwords are stored only as salted hashes.
+- Access to production data is restricted.
+- Every incoming submission is checked for spam and attack patterns.
 
 To report a security issue, email **security@formwire.app**.
 
-## Your data, your control
+## Control your data
 
-- **Rotate** a form secret if it's exposed — see [Managing Forms](/guides/managing-forms).
-- **Get your data out** — see [Exporting Data](/guides/exporting-data).
-- **Delete** submissions, forms, or your whole account from the dashboard.
+- **Regenerate** a form secret if it is being abused. See [Managing Forms](/guides/managing-forms#regenerate-the-form-secret).
+- **Export** your submissions. See [Exporting Data](/guides/exporting-data).
+- **Delete** submissions, forms, or your whole account in the dashboard.
 
 ## Related
 
-- [Privacy Policy](/privacy)
-- [Terms of Service](/terms)
+- [Privacy Policy](https://formwire.app/privacy)
+- [Terms of Service](https://formwire.app/terms)

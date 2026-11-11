@@ -1,39 +1,41 @@
 ---
 title: Managing Your Subscription
-description: Update, cancel, or recover your subscription.
+description: Upgrade, update your payment method, cancel, and understand each subscription status.
 sidebar:
   order: 2
 ---
 
-Manage your subscription from your billing settings. Payments are processed by **Creem**.
+You manage your subscription under **Billing** in your account settings. That page shows your plan, your usage for the current period, and your recent invoices.
+
+Payments are handled by **Creem**. FormWire never sees or stores your card number.
+
+## Change your plan or payment method
+
+Click **Manage subscription** in your billing settings. This opens the Creem billing portal, where you can change your plan and update your payment method.
+
+## Cancel
+
+Cancel from your billing settings. Your paid plan stays active until the end of the billing period you have already paid for. After that, your account moves to the free Starter plan and its limits apply.
 
 ## Subscription status
 
-Your subscription can be in one of several states, shown in your billing settings:
+Your billing settings show one of these statuses:
 
-| Status | Meaning |
-| --- | --- |
-| `trialing` | In a free trial. |
-| `active` | Paid and current. |
-| `scheduled_cancel` | Will cancel at the end of the current period. |
-| `canceled` | Ended. |
-| `paused` | Temporarily suspended. |
-| `unpaid` | A payment is outstanding. |
-
-## Updating payment details
-
-Update your payment method through the billing portal linked from your settings. Creem handles your card details securely — FormWire never stores your card number.
-
-## Canceling
-
-Cancel from your billing settings. Cancellation takes effect at the **end of your current billing period**, so you keep access until then. After it ends, your account moves to the free Starter plan and its limits apply.
+| Status | Meaning | Plan limits that apply |
+| --- | --- | --- |
+| `trialing` | You are in a trial. | Your paid plan |
+| `active` | Your subscription is paid and current. | Your paid plan |
+| `scheduled_cancel` | You canceled, and the subscription ends when the current period ends. | Your paid plan |
+| `canceled` | The subscription has ended. | Starter |
+| `paused` | The subscription is paused. | Starter |
+| `unpaid` | A payment failed and is still outstanding. | Starter |
 
 ## Failed payments
 
-If a payment fails, the subscription is marked `unpaid` and we'll attempt to recover it. If it isn't resolved, access to paid limits is suspended until payment succeeds or you switch plans.
+If a payment fails, your subscription becomes `unpaid` and the Starter limits apply until the payment goes through. Update your payment method in the billing portal to fix it.
 
 :::caution
-Submissions received while over the free limit during this time may be rejected — see [Plans & Limits](/billing/plans-and-limits).
+While the Starter limits apply, your forms reject submissions once your account passes 50 for the period. Rejected submissions are not stored. See [Plans & Limits](/billing/plans-and-limits).
 :::
 
 ## Next steps

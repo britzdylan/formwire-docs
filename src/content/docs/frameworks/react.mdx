@@ -1,11 +1,11 @@
 ---
 title: React
-description: Use FormWire with a React application.
+description: Submit a React form to FormWire with fetch and handle the response.
 sidebar:
   order: 2
 ---
 
-FormWire works with any React form. Post your form data as JSON (or `FormData`) to your submission endpoint and handle the response in your component.
+In React, you send the form's values to your submission endpoint as JSON and update your component from the response.
 
 ## Basic example
 
@@ -40,11 +40,12 @@ export function ContactForm() {
       <input name="name" placeholder="Your name" required />
       <input name="email" type="email" placeholder="Your email" required />
       <textarea name="message" placeholder="Your message" />
-      {/* Honeypot — hidden from real users */}
+      {/* Honeypot field, hidden from people */}
       <input
         name="_fw_hp"
         tabIndex={-1}
         autoComplete="off"
+        aria-hidden="true"
         style={{ position: "absolute", left: "-9999px" }}
       />
       <button disabled={status === "submitting"}>Send</button>
@@ -54,9 +55,9 @@ export function ContactForm() {
 }
 ```
 
-## Handling the response
+## Handle the response
 
-A JSON submission returns:
+A successful submission returns status `201` and this body:
 
 ```json
 {
@@ -70,9 +71,31 @@ A JSON submission returns:
 }
 ```
 
-On failure, the response is non-2xx with `success: false` and a `message`. Check `res.ok` and surface the message to the user. Common cases: the form is disabled, a submission limit was hit, or the payload was empty or too large (50&nbsp;KB max).
+`message` is the form's **success message**. If the form doesn't have one, it is the code `M_SUBMISSION_CREATED`. `redirectUrl` is the form's redirect URL, which you can use to navigate after a JSON submission.
+
+A rejected submission returns an error status and a body like this:
+
+```json
+{
+  "success": false,
+  "message": "E_FORM_DISABLED",
+  "status": 403
+}
+```
+
+`message` is an error code, not text for your visitors. Check `res.ok` and show your own message.
+
+| Status | Code | Cause |
+| --- | --- | --- |
+| 400 | `E_EMPTY_SUBMISSION` | The request had no fields. |
+| 400 | `E_PAYLOAD_TOO_LARGE` | The request was larger than 50&nbsp;KB. |
+| 403 | `E_FORM_DISABLED` | The form is disabled. |
+| 404 | `E_FORM_SECRET_INVALID` | No form has this secret. |
+| 429 | `E_SUBMISSION_LIMIT_REACHED` | The form reached its own submission limit. |
+| 429 | `E_PLAN_SUBMISSION_LIMIT_REACHED` | Your account reached its plan's monthly quota. |
+| 429 | | The same IP address sent more than 30 requests to this form in a minute. |
 
 ## Next steps
 
-- [Spam protection](/guides/spam-protection) — add a timing field for stronger bot detection
-- [Schema validation](/guides/schema-validation) — enforce field types and required fields
+- [Spam Protection](/guides/spam-protection) explains how to add a timing field.
+- [Schema Validation](/guides/schema-validation) explains how to require fields and check types.

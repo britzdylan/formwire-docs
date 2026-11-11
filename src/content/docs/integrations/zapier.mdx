@@ -1,6 +1,6 @@
 ---
 title: Zapier
-description: Connect FormWire to thousands of apps via Zapier.
+description: Send submissions to the apps Zapier supports.
 sidebar:
   order: 5
   badge:
@@ -9,23 +9,22 @@ sidebar:
 ---
 import { Steps } from '@astrojs/starlight/components';
 
-:::note[Coming soon]
-A dedicated Zapier app is in development. This page will cover triggers and setup once it's published.
+:::note[Planned]
+A FormWire app for Zapier is in development. Until it is published, you can connect Zapier with a webhook.
 :::
 
-## Use a webhook today
+## Connect Zapier with a webhook
 
-Zapier's **Webhooks by Zapier → Catch Hook** trigger works with FormWire right now:
+Zapier's **Webhooks by Zapier** app has a **Catch Hook** trigger that accepts FormWire's webhook requests.
 
 <Steps>
 
-1. In Zapier, create a Zap with the **Catch Hook** trigger and copy the custom webhook URL it gives you.
-2. In FormWire, create a [webhook integration](/integrations/webhooks) pointing at that URL and attach it to your forms.
-3. Map the submission fields in the `data` object to the actions in your Zap.
+1. In Zapier, create a Zap with the **Catch Hook** trigger and copy the webhook URL Zapier gives you.
+2. In FormWire, create a [webhook integration](/integrations/webhooks) with that URL and link it to your forms.
+3. Submit your form once so that Zapier receives a sample request.
+4. In your Zap's actions, use the fields from the `data` object.
 
 </Steps>
-
-This gives you access to Zapier's full catalog of apps before the native integration lands.
 
 ## Next steps
 

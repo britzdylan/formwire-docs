@@ -1,12 +1,12 @@
 ---
 title: Quickstart
-description: Get your first form submission in under 5 minutes.
+description: Create a form and receive your first submission in about five minutes.
 sidebar:
   order: 1
 ---
 import { LinkButton, LinkCard, CardGrid, Steps } from '@astrojs/starlight/components';
 
-Get your first form submission flowing in under 5 minutes.
+This guide takes you from a new account to your first stored submission. It takes about five minutes.
 
 <Steps>
 
@@ -23,19 +23,17 @@ Get your first form submission flowing in under 5 minutes.
 
 2. ### Create a form
 
-   From your dashboard, click **New Form** and give it a name. FormWire generates a unique **form secret** and a submission endpoint for you.
-
-   Your endpoint will look like:
+   In the dashboard, click **New Form** and give it a name. FormWire generates a **form secret** and a submission endpoint that contains it:
 
    ```txt
    https://api.formwire.app/v1/submit/YOUR_FORM_SECRET
    ```
 
-   You can copy it straight from the form's settings.
+   You can copy the endpoint from the form's **Settings** tab.
 
-3. ### Add to your frontend
+3. ### Point your form at the endpoint
 
-   Point any HTML form at your FormWire endpoint:
+   Set the `action` of any HTML form to your endpoint:
 
    ```html
    <form action="https://api.formwire.app/v1/submit/YOUR_FORM_SECRET" method="POST">
@@ -46,16 +44,18 @@ Get your first form submission flowing in under 5 minutes.
    </form>
    ```
 
-   Each `name` attribute becomes a field in your submission data.
+   Each `name` attribute becomes a field in the stored submission.
 
-4. ### Submit and verify
+   The form's **Setup** tab also generates this code for HTML and the common frameworks, with your endpoint already filled in.
 
-   Open your form in a browser, fill it out, and submit. Head back to your FormWire dashboard you should see the submission appear, along with the captured metadata.
+4. ### Submit the form
+
+   Open the page in a browser, fill in the form, and submit it. The submission appears in the form's **Submissions** tab, along with the metadata FormWire captured.
 
 </Steps>
 
-:::tip[Want a thank-you page?]
-By default, a plain HTML form post gets a JSON response. To send visitors to a thank-you page instead, set a **redirect URL** on the form (see [Managing Forms](/guides/managing-forms)).
+:::tip[Send visitors to a thank-you page]
+A plain HTML form post returns a JSON response by default. To send visitors to your own page instead, set a **redirect URL** in the form's settings. See [Managing Forms](/guides/managing-forms).
 :::
 
 ## Next steps
@@ -64,21 +64,21 @@ By default, a plain HTML form post gets a JSON response. To send visitors to a t
 	<LinkCard
 		title="Spam protection"
 		href="/guides/spam-protection"
-		description="Add a honeypot and timing field to keep bots out."
+		description="Add a honeypot field and a timing field."
 	/>
 	<LinkCard
 		title="Email notifications"
 		href="/guides/email-notifications"
-		description="Get an email the moment a submission arrives."
+		description="Get an email for each new submission."
 	/>
 	<LinkCard
-		title="Webhook integrations"
+		title="Webhooks"
 		href="/integrations/webhooks"
-		description="Forward submissions to your own backend or tools."
+		description="Forward submissions to your own backend or other tools."
 	/>
 	<LinkCard
 		title="Framework guides"
 		href="/frameworks/react"
-		description="Wire up React, Vue, Next.js, or Framer."
+		description="Submit from React, Vue, Next.js, or Framer."
 	/>
 </CardGrid>

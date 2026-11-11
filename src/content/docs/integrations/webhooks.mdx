@@ -1,25 +1,25 @@
 ---
 title: Webhooks
-description: Forward submissions to any endpoint with a generic webhook.
+description: Send each new submission as a JSON POST request to a URL you choose.
 sidebar:
   order: 2
 ---
 
-A webhook integration sends every new submission to a URL you choose, as a JSON `POST`. It's the most flexible way to connect FormWire to your own backend or to third-party services that accept inbound webhooks.
+A webhook integration sends each new submission to a URL you choose, as a JSON `POST` request. Use it to connect FormWire to your own backend or to any service that accepts incoming webhooks.
 
-## Creating a webhook
+## Create a webhook
 
-Create a webhook integration in the dashboard and configure:
+Go to **Integrations** in your account settings, create a webhook integration, and fill in:
 
-- **URL** (required) — the endpoint FormWire will `POST` to.
-- **Header** (optional) — the name of a custom header to send (e.g. `Authorization`, `X-Api-Key`).
-- **Token** (optional) — the value for that header.
+- **Name.** A label for the integration.
+- **URL.** The endpoint FormWire sends requests to. It must start with `http://` or `https://`.
+- **Custom headers** (optional). Name and value pairs that FormWire adds to every request. Use them to authenticate the request, for example with an `Authorization` or `X-Api-Key` header.
 
-If you provide both a header name and a token, FormWire adds that header to every request so your endpoint can authenticate the call. Attach the integration to the forms you want it to handle.
+Then open each form that should use the webhook and link it in the form's **Integrations** tab.
 
-## Delivery payload
+## Request body
 
-FormWire sends a `POST` with `Content-Type: application/json` and this body:
+FormWire sends a `POST` request with `Content-Type: application/json` and this body:
 
 ```json
 {
@@ -34,11 +34,11 @@ FormWire sends a `POST` with `Content-Type: application/json` and this body:
 }
 ```
 
-`data` contains your submission fields (with FormWire's reserved `_fw_*` fields already stripped).
+`data` contains the submitted fields. The reserved `_fw_hp` and `_fw_loaded` fields are removed before delivery.
 
-## Authentication example
+## Authenticate requests
 
-With **Header** = `X-Api-Key` and **Token** = `your-secret-value`, FormWire sends:
+Add a custom header that only you and FormWire know. For example, with a header named `X-Api-Key` and the value `your-secret-value`, FormWire sends:
 
 ```http
 POST /your/endpoint HTTP/1.1
@@ -46,21 +46,24 @@ Content-Type: application/json
 X-Api-Key: your-secret-value
 ```
 
-Verify this header on your side and reject requests that don't match.
+Check the header in your endpoint and reject requests that don't have the right value.
+
+## Which submissions are sent
+
+FormWire sends submissions that have the `new` status. Submissions flagged as `spam` or `pending_review` are not sent, and they show a failed delivery. To send one, change its status to `new` and click **Retry failed** on the submission.
 
 ## Success and failure
 
-- Your endpoint should respond with a **2xx** status to acknowledge receipt.
-- Any non-2xx response is treated as a **failure** and recorded against the submission.
-- You can **retry** failed deliveries from the submission — FormWire re-dispatches to the integrations that previously failed. See [Submissions](/guides/submissions).
+- Respond with a **2xx** status code to confirm you received the submission.
+- Any other status code counts as a failure. The same applies if FormWire can't reach your URL.
+- When a delivery fails, FormWire records the error on the submission and notifies you by email and in the dashboard.
+- FormWire doesn't retry automatically. Open the submission and click **Retry failed** to send it again. See [Submissions](/guides/submissions#retry-a-failed-integration).
 
-Respond quickly with a 2xx and do heavy processing asynchronously on your side, so slow handlers aren't counted as failures.
+## Connect other tools
 
-## Connecting other tools via webhook
-
-Because it's a plain JSON `POST`, this integration works with anything that accepts inbound webhooks — including a Slack incoming webhook URL or a Zapier "Catch Hook" trigger — ahead of the dedicated integrations for those tools.
+Any service that accepts a JSON `POST` request works with a webhook integration. The [Zapier](/integrations/zapier) and [Slack](/integrations/slack) pages show two examples.
 
 ## Next steps
 
 - [Integrations overview](/integrations)
-- [Submissions](/guides/submissions) — retry failed deliveries
+- [Submissions](/guides/submissions) explains how to retry failed deliveries.

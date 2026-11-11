@@ -1,17 +1,17 @@
 ---
 title: Schema Validation
-description: Validate submissions against a form schema.
+description: Require fields and check their types by adding a validation schema to a form.
 sidebar:
   order: 3
 ---
 
-By default, FormWire accepts any fields you send (schemaless mode). If you want to enforce structure — required fields and specific types — attach a **validation schema** to your form.
+A form without a schema accepts any fields you send. To require certain fields or check their types, add a **validation schema** to the form.
 
-Validation never blocks storage. Submissions that fail validation are still stored, but flagged: they're given the `pending_review` status and their errors are recorded so you can see exactly what went wrong.
+Validation never rejects a submission. A submission that fails validation is still stored. FormWire gives it the `pending_review` status and records each error so that you can see what was wrong.
 
-## Defining a schema
+## Define a schema
 
-A schema is a set of named fields, each with a **type** and whether it's **required**:
+You add field rules in the form's **Validation** tab. Each rule names a field, sets its **type**, and says whether it is **required**. A schema looks like this:
 
 ```json
 {
@@ -24,46 +24,46 @@ A schema is a set of named fields, each with a **type** and whether it's **requi
 }
 ```
 
-A field that isn't required may be omitted; if present, it must still match its type.
+A submission can leave out a field that is not required. If the field is present, it must still match its type.
 
 ## Field types
 
-| Type | Validates |
+| Type | What it accepts |
 | --- | --- |
-| `string` | Non-empty text (default) |
+| `string` | Text that is not empty |
 | `number` | A number |
 | `boolean` | A boolean |
-| `accepted` | A "truthy" acceptance value (e.g. a checked checkbox) |
+| `accepted` | A value that means "yes", such as a checked checkbox |
 | `date` | A valid date |
-| `email` | An email address (normalized) |
+| `email` | An email address. FormWire normalizes it before storing. |
 | `alpha` | Letters only |
 | `alphaNumeric` | Letters and numbers only |
-| `confirmed` | Matches a `<field>_confirmation` companion field |
+| `confirmed` | A value that matches a second field named `<field>_confirmation` |
 | `ipAddress` | An IP address |
 | `uuid` | A UUID |
 | `creditCard` | A credit card number |
 | `hexCode` | A hex color code |
 | `iban` | An IBAN |
 | `coordinates` | Geographic coordinates |
-| `mobileNumber` | A mobile phone number (strict) |
-| `url` | A URL with `http`/`https` protocol |
+| `mobileNumber` | A mobile phone number, checked strictly |
+| `url` | A URL that starts with `http://` or `https://` |
 
-## Validation outcomes
+## Validation results
 
-Each validated submission gets a validation status:
+Each submission gets one of these validation statuses:
 
 | Status | Meaning |
 | --- | --- |
-| `not_validated` | The form has no schema (schemaless mode). |
-| `validated` | All known fields passed and no unexpected fields were sent. |
-| `partially_validated` | Known fields passed, but the submission included fields not in the schema. |
-| `failed` | One or more fields failed validation. |
+| `not_validated` | The form has no schema. |
+| `validated` | Every field in the schema passed, and the submission had no other fields. |
+| `partially_validated` | Every field in the schema passed, and the submission also had fields that are not in the schema. |
+| `failed` | At least one field failed. |
 
-## Unknown fields are allowed
+## Fields outside the schema
 
-FormWire validates the fields you define but doesn't reject extra ones. If a submission includes fields outside your schema, they're stored and recorded as **unknown fields**, and the status becomes `partially_validated`. This keeps forms flexible — you can validate what matters without breaking when new fields appear.
+FormWire checks the fields in your schema and accepts any others. Extra fields are stored with the submission and listed as **unknown fields**, and the validation status becomes `partially_validated`. This means you can add a field to your site's form before you add it to the schema.
 
 ## Next steps
 
-- [Managing Forms](/guides/managing-forms) — attach a schema to a form
-- [Submissions](/guides/submissions) — review validation results
+- [Managing Forms](/guides/managing-forms) covers the other form settings.
+- [Submissions](/guides/submissions) explains where to see validation results.

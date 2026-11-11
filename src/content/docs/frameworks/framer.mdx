@@ -1,52 +1,60 @@
 ---
 title: Framer
-description: Use FormWire with a Framer site.
+description: Send a Framer form's submissions to FormWire.
 sidebar:
   order: 5
 ---
 
-You can connect a Framer form to FormWire today using the standard submission endpoint. A managed Framer integration is on the way (see below).
+You can send a Framer form's submissions to FormWire in two ways. Framer's built-in form component is the simplest. A Code Component gives you control over the request.
 
-## Connecting a Framer form
+## Use Framer's form component
 
-In Framer, add a form and set its submission behavior to send a `POST` request to your FormWire endpoint:
+In Framer, select your form and set it to send submissions to a **webhook**. Enter your FormWire endpoint as the webhook URL:
 
 ```txt
 https://api.formwire.app/v1/submit/YOUR_FORM_SECRET
 ```
 
-Map each Framer field's name to the key you want in your submission data. Framer posts form data, so FormWire will honor your form's configured redirect URL after a successful submission if one is set.
+Each Framer field's name becomes a field in the stored submission.
 
-For sites where you'd rather control the request yourself, use a Framer Code Component or Code Override that calls the endpoint with `fetch` — the approach is identical to the [React guide](/frameworks/react).
+Framer sends these submissions from its own servers, not from the visitor's browser. This has three effects:
+
+- The IP address, location, and device stored with each submission describe Framer's servers.
+- What the visitor sees after submitting is controlled in Framer. FormWire's redirect URL doesn't apply.
+- The timing check doesn't work, as explained under [Timing check](#timing-check).
+
+## Use a Code Component
+
+If you want the browser to send the submission, build the form as a Framer Code Component and call the endpoint with `fetch`. The code is the same as in the [React guide](/frameworks/react). FormWire then records each visitor's own location and device, and every spam check works.
 
 ## Honeypot
 
-Add a hidden field named `_fw_hp` to your Framer form to enable bot detection. See [Spam Protection](/guides/spam-protection).
+Add a field named `_fw_hp` to your form and hide it from visitors. A submission with a value in that field is marked as spam. See [Spam Protection](/guides/spam-protection#honeypot-field).
 
 ## Timing check
 
-:::caution[Native forms]
-The timing signal (`_fw_loaded`) **does not apply to Framer's native forms**. Framer routes native form submissions through its own servers before they reach your endpoint, and a native form gives you no way to stamp the page-load time as a field. There's nothing useful to add here, so skip it for native forms.
+:::caution[Framer's form component]
+The timing check doesn't work with Framer's form component. The component has no way to record when the page loaded and send that time as the `_fw_loaded` field.
 :::
 
-Timing detection **is** useful when you build a custom form with a Framer **Code Component** that posts to FormWire directly with `fetch`. Because your code owns the request, you can record when the form loaded and include `_fw_loaded` in the payload:
+The timing check works in a Code Component. Record the time when the form mounts, and send it as `_fw_loaded`:
 
 ```tsx
-// Capture when the form mounts — the closest proxy to page-load time.
+// Record when the form mounts.
 const loadedAt = useRef(Date.now())
 
-async function handleSubmit(formData) {
-  formData.append("_fw_loaded", String(loadedAt.current))
+async function handleSubmit(values) {
   await fetch("https://api.formwire.app/v1/submit/YOUR_FORM_SECRET", {
     method: "POST",
-    body: formData,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...values, _fw_loaded: loadedAt.current }),
   })
 }
 ```
 
-See [Spam Protection](/guides/spam-protection) for how the timing score works.
+[Spam Protection](/guides/spam-protection#timing-check) explains how the timing check affects the spam score.
 
 ## Next steps
 
-- [Spam protection](/guides/spam-protection)
-- [Managing Forms](/guides/managing-forms) — set a redirect URL for your thank-you page
+- [Spam Protection](/guides/spam-protection)
+- [Managing Forms](/guides/managing-forms)
