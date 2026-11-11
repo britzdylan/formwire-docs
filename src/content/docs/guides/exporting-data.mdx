@@ -1,30 +1,38 @@
 ---
 title: Exporting Data
-description: Get your submissions out of FormWire.
+description: Export a form's submissions as a CSV file, or send them to your own system with a webhook.
 sidebar:
   order: 6
 ---
 
-Your submissions are your data. This page covers how to get them out of FormWire.
+You can download a form's submissions as a CSV file, or send each new submission to your own system as it arrives.
 
-## Built-in export
+## Export a CSV file
 
-:::note[Coming soon]
-One-click **CSV** and **JSON** export from the dashboard is on the roadmap. This page will be updated with the details when it ships.
+Open a form, go to its **Submissions** tab, and click **Export CSV**.
+
+The file contains the submissions currently shown in the list. To export only some of them, search the list first.
+
+Each row is one submission. The columns are:
+
+- **Received**, **Status**, **Spam**, **Country**, and **Valid**
+- One column for each field that appears in the exported submissions
+
+The file is UTF-8 and opens in Excel, Google Sheets, and Numbers.
+
+:::note
+JSON export is planned. Until then, a webhook gives you each submission as JSON.
 :::
 
-## Getting your data today
+## Keep a live copy with a webhook
 
-Until built-in export lands, you have a couple of options:
+A [webhook integration](/integrations/webhooks) sends every new submission as JSON to a URL you choose, such as a serverless function or a database endpoint. Use this when you want your own copy of the data without exporting by hand.
 
-- **Forward submissions with a webhook.** Connect a [webhook integration](/integrations/webhooks) to a destination you control (a spreadsheet service, a database endpoint, a serverless function). New submissions are delivered as JSON in real time, giving you a continuous copy of your data.
-- **Request an export.** If you need a bulk export of existing submissions, contact support and we'll help.
+## Export before you delete
 
-## A note on data ownership
-
-You own the submissions you collect through FormWire — see our [Terms of Service](/terms) and [Privacy Policy](/privacy). When you delete a form or your account, the associated data is removed, so export anything you need to keep beforehand.
+Deleting a form deletes its submissions, and deleting your account deletes all of your data. You can't undo either one, so export what you want to keep first.
 
 ## Next steps
 
-- [Integrations: Webhooks](/integrations/webhooks)
+- [Webhooks](/integrations/webhooks)
 - [Submissions](/guides/submissions)

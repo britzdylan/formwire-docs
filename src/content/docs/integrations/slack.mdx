@@ -9,25 +9,29 @@ sidebar:
 ---
 import { Steps } from '@astrojs/starlight/components';
 
-:::note[Coming soon]
-A dedicated Slack integration is in development. This page will cover connecting and configuring it once it ships.
+:::note[Planned]
+A Slack integration that posts formatted messages to a channel you choose is in development. Until it is available, you can reach Slack through a relay.
 :::
 
-## Use a webhook today
+## Send submissions to Slack now
 
-You can already post submissions to Slack using an incoming webhook:
+A FormWire webhook can't post to a Slack incoming webhook URL directly. Slack expects a message in its own format, and FormWire sends the [submission as JSON](/integrations/webhooks#request-body). You need a step in between that turns the submission into a Slack message.
+
+The quickest way is Zapier:
 
 <Steps>
 
-1. In Slack, create an **Incoming Webhook** and copy its URL.
-2. In FormWire, create a [webhook integration](/integrations/webhooks) pointing at that URL.
-3. Attach it to the forms you want to notify a channel.
+1. In Zapier, create a Zap with the **Webhooks by Zapier** app and its **Catch Hook** trigger. Copy the webhook URL.
+2. In FormWire, create a [webhook integration](/integrations/webhooks) with that URL and link it to your forms.
+3. Submit your form once so that Zapier receives a sample request.
+4. Add a Slack action to the Zap that sends a channel message, and build the message from the fields in the `data` object.
 
 </Steps>
 
-New submissions will be delivered to Slack as JSON. The dedicated integration will add nicely formatted messages and channel selection.
+If you'd rather not use Zapier, point the webhook at a small function of your own that formats the message and posts it to a Slack incoming webhook URL.
 
 ## Next steps
 
 - [Webhooks](/integrations/webhooks)
+- [Zapier](/integrations/zapier)
 - [Integrations overview](/integrations)

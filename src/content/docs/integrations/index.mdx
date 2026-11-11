@@ -1,25 +1,25 @@
 ---
 title: Integrations
-description: Forward submissions to the tools you already use.
+description: Send each new submission to your own backend or to other tools.
 sidebar:
   order: 1
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-Integrations let FormWire forward each new submission to another system automatically — so a submission can land in your own backend, a workflow tool, or a chat channel the moment it arrives.
+An integration sends each new submission to another system as soon as FormWire stores it. You can use one to pass submissions to your own backend, a workflow tool, or a chat channel.
 
 ## Available now
 
 <LinkCard
 	title="Webhooks"
 	href="/integrations/webhooks"
-	description="Send submissions as JSON to any URL, with optional custom authentication headers. The most flexible integration and the foundation for connecting almost anything."
+	description="Send each submission as JSON to any URL, with custom headers for authentication."
 />
 
-## Coming soon
+## Planned
 
-These providers can be set up in the dashboard but don't yet deliver automatically. They're in active development:
+You can create these integrations in the dashboard, but they don't deliver submissions yet:
 
 <CardGrid>
 	<LinkCard
@@ -30,31 +30,36 @@ These providers can be set up in the dashboard but don't yet deliver automatical
 	<LinkCard
 		title="GitHub"
 		href="/integrations/github"
-		description="Connect submissions to your repos."
+		description="Send submissions to your repositories."
 	/>
 	<LinkCard
 		title="Zapier"
 		href="/integrations/zapier"
-		description="Reach thousands of apps via Zaps."
+		description="Send submissions to the apps Zapier supports."
 	/>
 	<LinkCard
 		title="Framer"
 		href="/integrations/framer"
-		description="A managed Framer connection (beta)."
+		description="A managed connection for Framer sites (beta)."
 	/>
 </CardGrid>
 
 :::tip
-In the meantime, a [webhook](/integrations/webhooks) can reach most of these — for example, posting to a Slack incoming webhook URL or a Zapier "Catch Hook" trigger.
+You can already reach these tools with a [webhook](/integrations/webhooks). Each page above shows how.
 :::
 
 ## How integrations work
 
-- You create an integration once, then attach it to one or more forms.
-- When a submission is received, FormWire dispatches it to each active integration attached to that form.
-- An integration can be toggled **active/inactive** without deleting it.
-- If a delivery fails, you can **retry** it from the submission — see [Submissions](/guides/submissions).
+1. You create an integration under **Integrations** in your account settings.
+2. You link it to one or more forms in each form's **Integrations** tab.
+3. When a linked form stores a submission with the `new` status, FormWire sends it to each active integration.
 
-## Data forwarded
+Things to know:
 
-When you enable an integration you instruct FormWire to send submission data to a destination outside our control, governed by that provider's own terms. You're responsible for the destinations you choose. See the [Terms of Service](/terms) and [Privacy Policy](/privacy).
+- Submissions flagged as `spam` or `pending_review` are not sent. If you change one back to `new`, you can send it with **Retry failed**.
+- You can turn an integration off without deleting it.
+- If a delivery fails, FormWire emails you and records the failure on the submission. FormWire doesn't retry automatically. You retry from the submission. See [Submissions](/guides/submissions#retry-a-failed-integration).
+
+## Where your data goes
+
+An integration sends submission data to a destination that FormWire doesn't control and that has its own terms. You are responsible for the destinations you choose. See the [Terms of Service](https://formwire.app/terms) and [Privacy Policy](https://formwire.app/privacy).

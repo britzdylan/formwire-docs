@@ -1,47 +1,53 @@
 ---
 title: FAQ
-description: Answers to common questions about using FormWire.
+description: Answers to common questions about missing submissions, spam, limits, and exporting data.
 sidebar:
   order: 6
 ---
 
-## Where is my submission?
+## Why can't I see my submission?
 
-If a submission isn't showing up:
+Check these in order:
 
-- **Check the status filter.** It may have been scored as `pending_review` or `spam` rather than `new`. See [Submissions](/guides/submissions).
-- **Check the form is enabled.** A disabled form rejects submissions.
-- **Check your limits.** If the form's per-form limit or your plan quota is reached, new submissions are rejected — see [Plans & Limits](/billing/plans-and-limits).
-- **Check the endpoint.** Make sure you're posting to `https://api.formwire.app/v1/submit/YOUR_FORM_SECRET` with the correct secret.
+1. **The status.** The submission may have been stored as `pending_review` or `spam`. Search the form's submissions for those statuses. See [Submissions](/guides/submissions).
+2. **The form.** A disabled form rejects every submission.
+3. **Your limits.** A form that has reached its own limit, or an account that has reached its plan's quota, rejects new submissions. See [Plans & Limits](/billing/plans-and-limits).
+4. **The endpoint.** Your form must post to `https://api.formwire.app/v1/submit/YOUR_FORM_SECRET` with the current secret. If you regenerated the secret, the old endpoint no longer works.
 
-## Do I need a token in the request body?
+If the request reached FormWire and was rejected, the response contains an error code that tells you why. The [React guide](/frameworks/react#handle-the-response) lists the codes.
 
-No. The form **secret** in the URL identifies your form. There's no separate token or API key for submitting.
+## Do I need an API key to submit?
 
-## Is the submission endpoint safe to use in client-side code?
+No. The form secret in the URL identifies your form. Submitting doesn't need a token or an API key.
 
-Yes — it's designed to be called from the browser. The secret is semi-public, like any third-party form action. If it's ever abused, [rotate it](/guides/managing-forms).
+## Is it safe to put the endpoint in client-side code?
+
+Yes. The endpoint is meant to be called from the browser. Anyone who views your page can see the secret, and the worst they can do with it is submit to your form. If that happens, [regenerate the secret](/guides/managing-forms#regenerate-the-form-secret).
 
 ## Why was a real message marked as spam?
 
-It likely tripped a spam signal — a filled honeypot, a too-fast submission, or content that matched a threat pattern. You can re-status it, and review how scoring works in [Spam Protection](/guides/spam-protection).
+It triggered a spam signal. Either the honeypot field had a value, the form was submitted within 2 seconds of loading, or a field contained text that looks like an attack. The submission's security details show which one. You can change its status, and [Spam Protection](/guides/spam-protection) explains the scoring.
 
-## What are the submission size limits?
+## How large can a submission be?
 
-Each submission is capped at **50&nbsp;KB**. Empty submissions are rejected.
+A submission can be at most **50&nbsp;KB** and must contain at least one field.
+
+## Is there a rate limit?
+
+Yes. Each IP address can send up to 30 requests per minute to a form. Requests over that limit get a `429` response.
 
 ## Can I upload files?
 
-File uploads aren't supported in submissions yet. (The validation schema includes a `file` type for future use.)
+Not yet. Submissions can't include file uploads.
 
 ## How do I send submissions to another tool?
 
-Use a [webhook integration](/integrations/webhooks) to forward submissions as JSON to any URL. Dedicated Slack, GitHub, and Zapier integrations are [coming soon](/integrations).
+Create a [webhook integration](/integrations/webhooks). It sends each new submission as JSON to a URL you choose. Slack, GitHub, and Zapier integrations are [planned](/integrations).
 
 ## How do I get my data out?
 
-See [Exporting Data](/guides/exporting-data).
+Export a form's submissions as a CSV file from its **Submissions** tab. See [Exporting Data](/guides/exporting-data).
 
-## Still stuck?
+## How do I get help?
 
-Email support — your support tier depends on your [plan](/billing/plans-and-limits).
+Email **support@formwire.app**. Pro and Business plans include email support, and Business requests are handled first. See [Plans & Limits](/billing/plans-and-limits).

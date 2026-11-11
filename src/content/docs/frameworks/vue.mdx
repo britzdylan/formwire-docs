@@ -1,11 +1,11 @@
 ---
 title: Vue
-description: Use FormWire with a Vue application.
+description: Submit a Vue form to FormWire with fetch and handle the response.
 sidebar:
   order: 3
 ---
 
-FormWire works with any Vue form. Collect your fields, post them as JSON to your submission endpoint, and react to the response.
+In Vue, you send the form's values to your submission endpoint as JSON and update your component from the response.
 
 ## Basic example
 
@@ -35,11 +35,12 @@ async function submit() {
     <input v-model="form.name" placeholder="Your name" required />
     <input v-model="form.email" type="email" placeholder="Your email" required />
     <textarea v-model="form.message" placeholder="Your message" />
-    <!-- Honeypot — hidden from real users -->
+    <!-- Honeypot field, hidden from people -->
     <input
       v-model="form._fw_hp"
       tabindex="-1"
       autocomplete="off"
+      aria-hidden="true"
       style="position: absolute; left: -9999px"
     />
     <button :disabled="status === 'submitting'">Send</button>
@@ -48,11 +49,15 @@ async function submit() {
 </template>
 ```
 
-## Handling the response
+## Handle the response
 
-A JSON submission returns an envelope with `success`, `message`, and a `data` object containing `submissionId`, `receivedAt`, and `redirectUrl`. On failure the response is non-2xx with `success: false` — check `res.ok` and show the `message`.
+A successful submission returns status `201` and a JSON body with `success`, `message`, and a `data` object that contains `submissionId`, `receivedAt`, and `redirectUrl`.
+
+A rejected submission returns an error status and a body with `success: false` and an error code in `message`. The code is not text for your visitors, so check `res.ok` and show your own message.
+
+The [React guide](/frameworks/react#handle-the-response) shows both bodies and lists the error codes. They are the same for every framework.
 
 ## Next steps
 
-- [Spam protection](/guides/spam-protection)
-- [Schema validation](/guides/schema-validation)
+- [Spam Protection](/guides/spam-protection)
+- [Schema Validation](/guides/schema-validation)

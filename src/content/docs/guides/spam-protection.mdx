@@ -1,39 +1,41 @@
 ---
 title: Spam Protection
-description: Protect your forms from spam and bot submissions.
+description: How FormWire scores submissions for spam, and how to add the honeypot and timing fields to your form.
 sidebar:
   order: 4
 ---
 
 import { Badge } from '@astrojs/starlight/components';
 
-FormWire scores every submission for spam as it arrives. The score drives the submission's status, so spam is separated from real messages without you lifting a finger.
+FormWire gives every submission a spam score when it arrives. The score sets the submission's status, which keeps spam out of your `new` submissions and stops it from being forwarded to your integrations.
+
+Content analysis runs on every submission. The honeypot and timing checks only work after you add a field for each one to your form.
 
 ## How scoring works
 
-Each submission starts at a score of 0. Signals add to it:
+Each submission starts with a score of 0. These signals add to it:
 
-| Signal | Points | Trigger |
+| Signal | Points | What triggers it |
 | --- | --- | --- |
-| Honeypot triggered | +80 | The `_fw_hp` field was filled in |
-| Suspiciously fast | +40 | Submitted less than 2 seconds after the form loaded |
-| Malicious content | varies | Threat patterns detected in the data (e.g. SQL injection, XSS) |
+| Honeypot | +80 | The `_fw_hp` field has a value. |
+| Timing | +40 | The form was submitted less than 2 seconds after it loaded. |
+| Malicious content | +40 to +80 | A field contains an attack pattern, such as SQL injection or cross-site scripting. |
 
-The score is capped at 100 and mapped to a status:
+The score can't go above 100. It sets the submission's status:
 
 | Score | Spam status | Submission status |
 | --- | --- | --- |
-| 0–30 | `clean` | <Badge text="new" variant="success" /> (if valid) |
-| 31–60 | `suspicious` | <Badge text="pending_review" variant="caution" /> |
-| 61–100 | `confirmed_spam` | <Badge text="spam" variant="danger" /> |
+| 0 to 30 | `clean` | <Badge text="new" variant="success" />, if the submission also passes validation |
+| 31 to 60 | `suspicious` | <Badge text="pending_review" variant="caution" /> |
+| 61 to 100 | `confirmed_spam` | <Badge text="spam" variant="danger" /> |
 
-:::note[Nothing is silently dropped]
-Even `spam` submissions are stored so you can review them.
+:::note[Spam is stored, not discarded]
+FormWire stores submissions marked as `spam` so that you can review them and recover anything that was flagged by mistake.
 :::
 
 ## Honeypot field
 
-A honeypot is a hidden field real users never touch but bots tend to fill. Add a field named **`_fw_hp`** and hide it with CSS (don't use `type="hidden"` — some bots skip those):
+A honeypot is a field that people can't see and bots tend to fill in. Add a field named **`_fw_hp`** to your form and hide it with CSS. Don't use `type="hidden"`, because some bots skip hidden inputs.
 
 ```html
 <input
@@ -46,11 +48,11 @@ A honeypot is a hidden field real users never touch but bots tend to fill. Add a
 />
 ```
 
-If this field arrives with any value, the submission gets +80 — enough to mark it as spam on its own. FormWire strips `_fw_hp` from your stored data.
+A submission with any value in this field gets 80 points, which is enough to mark it as spam. FormWire removes `_fw_hp` before it stores the submission.
 
 ## Timing check
 
-Bots submit instantly; humans take a few seconds. Record when the form loaded in a field named **`_fw_loaded`** (a millisecond timestamp), and FormWire flags submissions that arrive in under 2 seconds:
+Bots usually submit a form the moment it loads, and people take longer. Add a field named **`_fw_loaded`** and set it to the time the form loaded, as a timestamp in milliseconds:
 
 ```html
 <input type="hidden" name="_fw_loaded" value="" />
@@ -59,26 +61,34 @@ Bots submit instantly; humans take a few seconds. Record when the form loaded in
 </script>
 ```
 
-A suspiciously fast submission adds +40 to the score. Like the honeypot, `_fw_loaded` is stripped from your stored data.
+A submission that arrives less than 2 seconds after that time gets 40 points. FormWire removes `_fw_loaded` before it stores the submission.
 
 :::caution[Framer]
-The timing check doesn't apply to Framer's native forms — they're routed through Framer's own servers and give you no way to stamp the load time. It only helps when you build a custom form with a Framer Code Component that posts to FormWire directly. See the [Framer guide](/frameworks/framer#timing-check).
+The timing check doesn't work with Framer's built-in forms, because Framer sends those submissions from its own servers and you can't add the load time as a field. It works when you build the form as a Framer Code Component that posts to FormWire directly. See the [Framer guide](/frameworks/framer#timing-check).
 :::
 
-## Malicious content detection
+## Malicious content
 
-FormWire inspects submitted values for threat patterns (such as SQL injection and cross-site scripting attempts). When detected, they contribute to the spam score and are recorded in the submission's security details.
+FormWire checks every submitted value for attack patterns. The points depend on how severe the pattern is:
 
-## Reviewing spam
+| Pattern | Points |
+| --- | --- |
+| Path traversal | +40 |
+| SQL injection, cross-site scripting, or script injection | +60 |
+| Command injection | +80 |
 
-Filter the [submissions](/guides/submissions) view by status to triage:
+If a submission matches more than one pattern, the highest value applies and each additional match adds 10 points. The matches are listed in the submission's security details.
 
-- <Badge text="pending_review" variant="caution" /> — borderline; worth a glance.
-- <Badge text="spam" variant="danger" /> — high-confidence spam.
+## Review flagged submissions
 
-If something legitimate was misflagged, you can re-status it.
+Search a form's [submissions](/guides/submissions) for a status to see what was flagged:
+
+- <Badge text="pending_review" variant="caution" /> submissions are borderline and worth checking.
+- <Badge text="spam" variant="danger" /> submissions scored 61 or higher.
+
+If a real message was flagged, open it and change its status.
 
 ## Next steps
 
-- [Submissions](/guides/submissions) — review and re-status flagged submissions
-- [Schema Validation](/guides/schema-validation) — reject malformed data structurally
+- [Submissions](/guides/submissions) explains how to review and re-status flagged submissions.
+- [Schema Validation](/guides/schema-validation) explains how to flag submissions with missing or malformed fields.

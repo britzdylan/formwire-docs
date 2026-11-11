@@ -1,6 +1,6 @@
 ---
 title: GitHub
-description: Connect FormWire to GitHub.
+description: Send submissions to GitHub.
 sidebar:
   order: 4
   badge:
@@ -8,13 +8,13 @@ sidebar:
     variant: caution
 ---
 
-:::note[Coming soon]
-A dedicated GitHub integration is in development. This page will cover connecting it and what it does once it ships.
+:::note[Planned]
+A GitHub integration is in development. Until it is available, you can reach GitHub with a webhook.
 :::
 
-## In the meantime
+## Send submissions to GitHub with a webhook
 
-If you want submissions to reach GitHub now (for example, to open an issue via the GitHub API), use a [webhook integration](/integrations/webhooks) pointed at a small endpoint or workflow service that calls the GitHub API with your submission data.
+The GitHub API needs its own request format, so FormWire can't post to it directly. Point a [webhook integration](/integrations/webhooks) at a service that you control, such as a serverless function or a Zapier Zap, and have that service call the GitHub API. For example, it could open an issue for each submission.
 
 ## Next steps
 

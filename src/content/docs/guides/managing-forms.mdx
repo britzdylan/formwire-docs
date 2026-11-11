@@ -1,65 +1,74 @@
 ---
 title: Managing Forms
-description: Create, configure, and manage your forms.
+description: Create a form, change its settings, limit submissions, regenerate its secret, and delete it.
 sidebar:
   order: 1
 ---
 
-A form is the container for everything FormWire does on your behalf: it owns the submission endpoint, the spam and validation rules, and how submissions are delivered to you.
+A form holds everything FormWire needs to handle one form on your site, including its submission endpoint, its validation schema, its notification settings, and its integrations.
 
-## Creating and editing forms
+## Create a form
 
-Create a form from the dashboard with a **name** (1–90 characters) and an optional **description**. On creation, FormWire generates the form's secret and submission endpoint.
+Click **New Form** in the dashboard and enter a **name** (1 to 90 characters). You can also add a **description**. FormWire generates the form's secret and submission endpoint when you create it.
 
-You can edit a form's configuration at any time. The available settings are below.
+You can add **tags** to a form to group related forms and filter your form list.
 
-## Configuration options
+## Settings
+
+You can change these settings at any time.
 
 | Setting | What it does |
 | --- | --- |
-| **Name** | Human label for the form (1–90 characters). |
+| **Name** | The label you see in the dashboard (1 to 90 characters). |
 | **Description** | Optional notes for your own reference. |
-| **Enabled** | When off, the submission endpoint rejects all incoming submissions. |
-| **Notifications enabled** | Toggles new-submission email notifications for this form. (Sent to your FormWire account email) |
-| **Redirect URL** | Where to send visitors after a successful HTML form post. Must be a valid URL. |
-| **Success message** | Message returned on success (up to 500 characters). |
-| **Error message** | Message shown when a submission can't be accepted (up to 500 characters). |
-| **Submission limit** | A maximum submission count per time window — see below. |
-| **Validation schema** | An optional field schema — see [Schema Validation](/guides/schema-validation). |
+| **Enabled** | When this is off, the endpoint rejects every submission. |
+| **Email notifications** | Sends an email for each submission to this form. See [Email Notifications](/guides/email-notifications). |
+| **Redirect URL** | Where visitors go after a successful HTML form post. It must be a valid URL. |
+| **Success message** | The message returned in the JSON response on success (up to 500 characters). |
+| **Submission limit** | The maximum number of submissions the form accepts in a time window. See [Submission limits](#submission-limits). |
+| **Validation schema** | Optional rules for field types and required fields. See [Schema Validation](/guides/schema-validation). |
 
-## Redirects vs. JSON responses
+## Redirects and JSON responses
 
-How a submission responds depends on how it was sent:
+The response to a successful submission depends on how it was sent:
 
-- **HTML form posts** (`application/x-www-form-urlencoded`) with a **redirect URL** set → the visitor is redirected there.
-- **JSON posts** (or HTML posts without a redirect URL) → a JSON response is returned containing the success message, submission ID, and received timestamp.
+- An **HTML form post** (`application/x-www-form-urlencoded`) to a form that has a **redirect URL** redirects the visitor to that URL.
+- Every other submission gets a JSON response that contains the success message, the submission ID, and the time it was received. This includes JSON posts and HTML form posts when no redirect URL is set.
+
+The [React guide](/frameworks/react#handle-the-response) shows the JSON response and the error codes.
 
 ## Submission limits
 
-You can cap how many submissions a form accepts within a rolling window. Set a **maximum count** and a **window type**:
+You can limit how many submissions a form accepts. Set a **maximum count** and choose a **window**:
 
-| Window type | Resets |
+| Window | When the count resets |
 | --- | --- |
-| `daily` | Start of each day |
-| `weekly` | Start of each week |
-| `monthly` | Start of each month |
-| `yearly` | Start of each year |
-| `all_time` | Never (a hard lifetime cap) |
+| `daily` | At the start of each day |
+| `weekly` | At the start of each week |
+| `monthly` | At the start of each month |
+| `yearly` | At the start of each year |
+| `all_time` | Never. The limit applies to the form's whole lifetime. |
 
-Once the limit is reached, further submissions are rejected until the window resets. This is separate from your **plan quota** — see [Plans & Limits](/billing/plans-and-limits).
+When the form reaches its limit, it rejects further submissions until the window resets. Leave the limit empty to accept unlimited submissions.
 
-## Rotating the form secret
+This limit is separate from your plan's monthly quota, which counts submissions across all your forms. See [Plans & Limits](/billing/plans-and-limits).
 
-If your form secret is exposed or abused, **reroll** it from the form's settings. A new secret is generated immediately and the old endpoint stops working. Update your frontend with the new endpoint afterward.
+## Regenerate the form secret
 
-## Deleting a form
+If your form secret is being abused, click **Regenerate Secret** in the form's settings. FormWire creates a new secret, and the old endpoint stops working immediately.
+
+:::caution
+Your form can't receive submissions until you update your site with the new endpoint.
+:::
+
+## Delete a form
 
 :::danger
-Deleting a form removes it and its submissions. This can't be undone — [export](/guides/exporting-data) anything you need first.
+Deleting a form also deletes all of its submissions, and you can't undo it. [Export](/guides/exporting-data) the submissions you want to keep first.
 :::
 
 ## Next steps
 
-- [Submissions](/guides/submissions) — work with the data your forms collect
-- [Schema Validation](/guides/schema-validation)
-- [Email Notifications](/guides/email-notifications)
+- [Submissions](/guides/submissions) explains how to review the data your forms collect.
+- [Schema Validation](/guides/schema-validation) explains how to check field types.
+- [Email Notifications](/guides/email-notifications) explains how to get an email for each submission.
